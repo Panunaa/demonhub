@@ -564,6 +564,36 @@ body.auth-signin #signinCard,body.auth-signup #signupCard{display:block}
 </div>
 <div class="toast" id="toast" role="status"><svg class="i" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span id="toastTxt"></span></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+window.DH_AUTH=(function(){
+  var URL="https://unfwfifrrlvjcjwfcavm.supabase.co";
+  var KEY="sb_publishable_zpJ49W7kVBL3_R7KuGOLBg_17ZK8wJr";
+  var sb=null,user=null,ready=[],inited=false;
+  function init(){ if(inited)return; inited=true;
+    if(!window.supabase)return;
+    sb=window.supabase.createClient(URL,KEY);
+    sb.auth.getSession().then(function(r){user=(r.data&&r.data.session&&r.data.session.user)||null;fire()});
+    sb.auth.onAuthStateChange(function(e,s){user=(s&&s.user)||null;fire()});
+  }
+  function fire(){ready.forEach(function(f){try{f(user)}catch(_){}})}
+  init();
+  return {
+    user:function(){return user},
+    onChange:function(f){ready.push(f);fire()},
+    signUp:function(email,pass,username){return sb.auth.signUp({email:email,password:pass,options:{data:{username:username}}})},
+    signIn:function(email,pass){return sb.auth.signInWithPassword({email:email,password:pass})},
+    signOut:function(){return sb.auth.signOut()},
+    loadFavs:function(){ if(!user)return Promise.resolve([]);
+      return sb.from("favorites").select("level_id").then(function(r){ if(r.error)return []; return (r.data||[]).map(function(x){return x.level_id}) }); },
+    saveFav:function(id,on){ if(!user)return;
+      if(on) sb.from("favorites").upsert({user_id:user.id,level_id:id});
+      else sb.from("favorites").delete().eq("level_id",id); },
+    pushAll:function(ids){ if(!user||!ids.length)return Promise.resolve();
+      return sb.from("favorites").upsert(ids.map(function(id){return {user_id:user.id,level_id:id}})); }
+  };
+})();
+</script>
 <script>(()=>{let d=null;try{const x=new XMLHttpRequest();x.open("GET","data.json",false);x.send();if(x.status===200)d=JSON.parse(x.responseText)}catch(e){}window.DH_DATA=d})();</script>
 <script>
 (()=>{
@@ -754,7 +784,7 @@ $("#detail").addEventListener("click",e=>{
   if(e.target.closest("#histTog")){const l=S.levels[S.sel];S.histOpen=!S.histOpen;loadHistory(l);return}
   const b=e.target.closest("[data-act]");if(!b)return;const l=S.levels[S.sel];
   const a=b.dataset.act;
-  if(a==="fav"){S.favs.has(l.id)?S.favs.delete(l.id):S.favs.add(l.id);try{localStorage.setItem("dh-favs",JSON.stringify([...S.favs]))}catch(_){}const on=S.favs.has(l.id);b.classList.toggle("on",on);b.setAttribute("aria-pressed",on);toast(on?`Added ${l.name} to favorites`:`Removed from favorites`);renderList();markSel()}
+  if(a==="fav"){S.favs.has(l.id)?S.favs.delete(l.id):S.favs.add(l.id);try{localStorage.setItem("dh-favs",JSON.stringify([...S.favs]))}catch(_){}if(window.DH_AUTH)DH_AUTH.saveFav(l.id,S.favs.has(l.id));const on=S.favs.has(l.id);b.classList.toggle("on",on);b.setAttribute("aria-pressed",on);toast(on?`Added ${l.name} to favorites`:`Removed from favorites`);renderList();markSel()}
 });
 function copy(txt,msg){(navigator.clipboard?navigator.clipboard.writeText(String(txt)):Promise.reject()).then(()=>toast(msg)).catch(()=>{const t=document.createElement("textarea");t.value=txt;document.body.appendChild(t);t.select();try{document.execCommand("copy");toast(msg)}catch(_){toast(String(txt))}t.remove()})}
 document.addEventListener("click",e=>{const c=e.target.closest("[data-copy]");if(c)copy(c.dataset.copy,`Copied ID ${c.dataset.copy}`)});
@@ -1057,7 +1087,29 @@ function showAuth(which,push){
   if(push&&authHash()!==which)history.pushState(null,"",`#/${which}`);
   $("#authView").scrollTop=0;window.scrollTo(0,0);
 }
-$("#authView").addEventListener("submit",e=>{e.preventDefault();toast("Accounts are coming soon")});
+$("#authView").addEventListener("submit",async e=>{
+  e.preventDefault();
+  if(!window.DH_AUTH)return toast("Auth unavailable");
+  const f=e.target,up=!!f.closest("#signupCard");
+  const mail=f.querySelector("input[type=email]").value.trim();
+  const passes=f.querySelectorAll("input[type=password]");
+  const pass=passes[0].value;
+  if(!mail||!pass)return toast("Fill email and password");
+  if(up){
+    if(pass!==passes[1].value)return toast("Passwords do not match");
+    const un=f.querySelector("#suUser").value.trim();
+    if(!un)return toast("Pick a username");
+    const r=await DH_AUTH.signUp(mail,pass,un);
+    if(r.error)return toast(r.error.message);
+    toast("Account created! Welcome, "+un);
+    if(r.data&&r.data.session)location.hash="#/list";
+  }else{
+    const r=await DH_AUTH.signIn(mail,pass);
+    if(r.error)return toast(r.error.message);
+    toast("Welcome back!");
+    location.hash="#/list";
+  }
+});
 $("#authView").addEventListener("click",e=>{if(e.target.closest("[data-soon-acc]")){e.preventDefault();toast("Accounts are coming soon")}});
 const isListHash=()=>/#\/classic\/\d+/.test(location.hash);
 window.addEventListener("popstate",()=>{if(authHash())showAuth(authHash(),false);else if(isLbHash())showLb(lbHashId(),!!lbHashId(),false);else if(isListHash())showList(fromHash(),false,false);else showHome(false)});
@@ -1085,6 +1137,27 @@ if(authHash())showAuth(authHash(),false);
 else if(isLbHash())showLb(lbHashId(),!!lbHashId(),false);
 else if(isListHash()){setNav();if(S.levels.length){select(S.sel);markSel()?.scrollIntoView({block:"center"})}else renderDetail()}
 else showHome(false);
+document.addEventListener("click",function(e){
+  const b=e.target.closest(".login-top");
+  if(b&&window.DH_AUTH&&DH_AUTH.user()){e.stopPropagation();DH_AUTH.signOut();toast("Signed out");}
+},true);
+if(window.DH_AUTH)DH_AUTH.onChange(u=>{
+  const btns=document.querySelectorAll(".login-top");
+  if(u){
+    const nm=(u.user_metadata&&u.user_metadata.username)||u.email||"player";
+    btns.forEach(b=>b.textContent=nm+" · выход");
+    DH_AUTH.loadFavs().then(remote=>{
+      const before=S.favs.size;let added=0;
+      remote.forEach(id=>{if(!S.favs.has(id)){S.favs.add(id);added++}});
+      const all=[...S.favs];
+      if(S.favs.size!==before){try{localStorage.setItem("dh-favs",JSON.stringify(all))}catch(_){}}
+      DH_AUTH.pushAll(all);
+      if(added)renderList();
+    });
+  } else {
+    btns.forEach(b=>b.textContent="Login");
+  }
+});
 loadLive();loadAredl();
 })();
 </script>
