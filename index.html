@@ -568,7 +568,7 @@ body.auth-signin #signinCard,body.auth-signup #signupCard{display:block}
 <script>
 (()=>{
 "use strict";
-const SNAPSHOT_DATE=DH_D.date||"2026-10-09";
+const DH_D=window.DH_DATA||{};const SNAPSHOT_DATE=DH_D.date||"2026-10-09";
 const SNAPSHOT=DH_D.snapshot||[];
 const AREDL_SNAP=DH_D.aredl||{};
 const AREDL_API="https://api.aredl.net/v2/api/aredl/levels";
