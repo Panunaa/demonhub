@@ -1,0 +1,1092 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Demonhub — Geometry Dash Demon List</title>
+<meta name="description" content="Demonhub — the Geometry Dash classic demon list with live placements, points and records.">
+<meta name="theme-color" content="#131316">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%237C5CFC'/%3E%3Cpath d='M16 6l10 10-10 10L6 16z' fill='none' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://img.youtube.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#131316; --panel:#17171B; --raised:#1C1C21; --raised-2:#222228;
+  --line:#222228; --line-2:#2C2C33;
+  --panel-a:rgba(23,23,27,.84); --raised-a:rgba(28,28,33,.85); --bg-a:rgba(19,19,22,.86);
+  --accent:#7C5CFC; --accent-2:#A78BFA; --accent-soft:rgba(124,92,252,.12);
+  --ok:#34D399; --warn:#FBBF24; --silver:#60A5FA; --bronze:#FB923C; --red:#F87171;
+  --text:#E4E4E7; --text-2:#C4C4CA; --text-3:#A1A1AA; --text-4:#71717A;
+  --r:4px; --r-lg:6px;
+  --head:56px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text-2);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow:hidden;font-feature-settings:"cv11","ss01"}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0}
+a{color:inherit;text-decoration:none}
+svg.i{width:1em;height:1em;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+:focus-visible{outline:1px solid var(--accent);outline-offset:1px;border-radius:var(--r)}
+.tnum{font-variant-numeric:tabular-nums}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* full-screen level backdrop */
+.aura{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:var(--bg)}
+.aura img{position:absolute;inset:-48px;width:calc(100% + 96px);height:calc(100% + 96px);object-fit:cover;filter:blur(16px);opacity:0;transition:opacity .6s ease}
+.aura img.on{opacity:.32}
+.aura::after{content:"";position:absolute;inset:0;background:rgba(19,19,22,.6)}
+
+/* header */
+.top{position:relative;z-index:30;height:var(--head);display:flex;align-items:center;justify-content:space-between;gap:24px;padding:0 16px;background:var(--bg-a);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:8px;user-select:none}
+.logo{width:24px;height:24px;border-radius:var(--r);background:var(--accent);display:grid;place-items:center}
+.logo svg{width:14px;height:14px}
+.brand-name{font-weight:700;font-size:15px;letter-spacing:-.01em;color:#fff}
+.nav{display:flex;align-items:center;gap:0}
+.nav a{display:flex;align-items:center;gap:4px;height:32px;padding:0 10px;border-radius:var(--r);font-size:13px;font-weight:500;color:var(--text-3);transition:color .12s,background .12s}
+.nav a:hover{color:var(--text);background:rgba(255,255,255,.04)}
+.nav a.active{color:#fff}
+.nav a svg{font-size:12px;opacity:.6}
+.top-right{display:flex;align-items:center;gap:8px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:32px;padding:0 12px;border-radius:var(--r);font-size:13px;font-weight:500;white-space:nowrap;transition:background .12s,border-color .12s,color .12s}
+.btn-ghost{border:1px solid var(--line-2);color:var(--text-2);background:var(--raised-a)}
+.btn-ghost:hover{border-color:var(--accent);color:#fff}
+.btn-fire{color:#fff;background:var(--accent)}
+.btn-fire:hover{background:#6E4FF3}
+.btn[disabled]{opacity:.4;pointer-events:none}
+.icon-btn{width:32px;height:32px;border-radius:var(--r);display:grid;place-items:center;color:var(--text-3);border:1px solid var(--line-2);background:var(--raised-a);transition:color .12s,border-color .12s,background .12s;font-size:15px}
+.icon-btn:hover{color:#fff;border-color:var(--accent)}
+.icon-btn.on{color:#fff;border-color:var(--accent);background:var(--accent-soft)}
+.menu-btn{display:none}
+
+/* layout */
+.app{position:relative;z-index:1;display:grid;grid-template-columns:336px minmax(0,1fr) 304px;height:calc(100vh - var(--head));height:calc(100dvh - var(--head))}
+.col{min-height:0;display:flex;flex-direction:column}
+.scroll{overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.12) transparent}
+.scroll::-webkit-scrollbar{width:8px}.scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:var(--r);border:2px solid transparent;background-clip:padding-box}
+.side{background:var(--panel-a);border-right:1px solid var(--line)}
+.rec{background:var(--panel-a);border-left:1px solid var(--line)}
+
+/* sidebar */
+.side-head{padding:16px 16px 8px;display:flex;flex-direction:column;gap:8px}
+.seg{position:relative;display:grid;grid-template-columns:1fr 1fr;padding:2px;border-radius:var(--r);background:rgba(19,19,22,.7);border:1px solid var(--line-2)}
+.seg .pill{position:absolute;top:2px;bottom:2px;left:2px;width:calc(50% - 2px);border-radius:3px;background:var(--raised-2);transition:transform .2s ease}
+.seg[data-v="platformer"] .pill{transform:translateX(100%)}
+.seg button{position:relative;z-index:1;height:28px;font-size:13px;font-weight:500;color:var(--text-3);transition:color .12s}
+.seg button[aria-pressed="true"]{color:#fff}
+.search-row{display:flex;gap:8px}
+.search{position:relative;flex:1}
+.search svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-4);font-size:14px;pointer-events:none}
+.search input{width:100%;height:32px;padding:0 32px;border-radius:var(--r);background:rgba(19,19,22,.7);border:1px solid var(--line-2);color:var(--text);font-size:13px;transition:border-color .12s}
+.search input::placeholder{color:var(--text-4)}
+.search input:hover{border-color:#3A3A42}
+.search input:focus{outline:none;border-color:var(--accent)}
+.search input:not(:placeholder-shown)~.kbd,.search input:focus~.kbd{display:none}
+.search input::-webkit-search-cancel-button{filter:grayscale(1) brightness(1.6);cursor:pointer}
+.kbd{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:500;color:var(--text-4);border:1px solid var(--line-2);border-radius:3px;padding:0 5px;line-height:16px;pointer-events:none}
+.sortbar{display:none;flex-wrap:wrap;gap:4px}
+.sortbar.open{display:flex}
+.chip{height:24px;padding:0 8px;border-radius:var(--r);font-size:12px;font-weight:500;color:var(--text-3);border:1px solid var(--line-2);background:transparent;transition:color .12s,border-color .12s,background .12s}
+.chip:hover{color:#fff;border-color:#3A3A42}
+.chip[aria-pressed="true"]{color:#fff;border-color:var(--accent);background:var(--accent-soft)}
+.list{flex:1;padding:0 0 16px}
+.sec{position:sticky;top:0;z-index:2;display:flex;align-items:baseline;gap:8px;padding:16px 16px 8px;font-size:12px;font-weight:600;color:var(--text);background:rgba(23,23,27,.96);border-bottom:1px solid var(--line)}
+.sec i{display:none}
+.sec em{margin-left:auto;font-style:normal;font-weight:500;color:var(--text-4)}
+.row{position:relative;width:100%;display:flex;align-items:center;gap:12px;padding:8px 16px 8px 8px;text-align:left;border-bottom:1px solid rgba(255,255,255,.035);transition:background .12s}
+.row:hover{background:rgba(255,255,255,.035)}
+.row.sel{background:rgba(124,92,252,.12)}
+.row.sel::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--accent)}
+.rank{width:32px;flex-shrink:0;text-align:right;font-weight:600;font-size:14px;color:var(--text-3)}
+.rank.r1{color:var(--warn)}.rank.r2{color:var(--silver)}.rank.r3{color:var(--bronze)}
+.row.sel .rank:not(.r1):not(.r2):not(.r3){color:#fff}
+.thumb{position:relative;width:48px;height:28px;flex-shrink:0;border-radius:var(--r);overflow:hidden;background:var(--raised)}
+.thumb img{width:100%;height:100%;object-fit:cover;transition:opacity .3s;opacity:0}
+.thumb img.ld{opacity:.85}
+.meta{min-width:0;flex:1;display:flex;flex-direction:column}
+.meta b{font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.meta small{display:flex;gap:4px;align-items:center;font-size:12px;color:var(--text-3);white-space:nowrap;overflow:hidden}
+.meta small .h{overflow:hidden;text-overflow:ellipsis;flex-shrink:1;min-width:0}
+.meta small .v{color:var(--ok);overflow:hidden;text-overflow:ellipsis;flex-shrink:2;min-width:0}
+.pts{flex-shrink:0;text-align:right;display:flex;flex-direction:column;align-items:flex-end}
+.pts>span{font-size:13px;white-space:nowrap}
+.pts i{font-style:normal;color:var(--text-3)}
+.pts i.dash{color:var(--text-4);margin:0 4px}
+.pts b{font-weight:600;color:var(--accent-2)}
+.pts small{font-size:11px;color:var(--text-4);white-space:nowrap}
+@media (min-width:861px){
+  .row{display:grid;grid-template-columns:auto 48px minmax(0,1fr);column-gap:12px;row-gap:1px}
+  .row>.rank,.row>.thumb{grid-row:1/3}
+  .row>.meta,.row>.pts{grid-column:3}
+  .pts{flex-direction:row;align-items:baseline;justify-content:flex-start;gap:4px;text-align:left}
+  .pts>span{font-size:12px}
+}
+.fav-dot{color:var(--accent-2);font-size:11px;margin-left:4px}
+.side-foot{display:flex;align-items:center;justify-content:flex-end;gap:8px;height:40px;padding:0 16px;border-top:1px solid var(--line);font-size:12px;color:var(--text-3)}
+.status{display:flex;align-items:center;gap:8px}
+.dot{width:6px;height:6px;border-radius:3px;background:var(--ok)}
+.dot.warn{background:var(--warn)}
+.empty{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:24px 16px;color:var(--text-3)}
+.empty .ico{display:none}
+.empty b{color:var(--text);font-size:13px;font-weight:600}
+.empty p{font-size:13px;max-width:280px}
+
+/* detail */
+.main{position:relative}
+.detail{position:relative;z-index:1;width:100%;max-width:880px;margin:0 auto;padding:32px 40px 64px}
+.mob-back{display:none}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 24px;align-items:start;margin-bottom:16px}
+.crumb{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--text-3);margin-bottom:8px}
+.crumb .badge{display:inline-flex;align-items:center;height:20px;padding:0 6px;border-radius:var(--r);color:#fff;background:var(--accent);font-size:12px;font-weight:600}
+.title{font-weight:700;font-size:40px;line-height:1.1;letter-spacing:-.02em;color:#fff;overflow-wrap:break-word}
+.by{margin-top:8px;font-size:14px;color:var(--text-3)}
+.by b{color:var(--text);font-weight:500}
+.by .vf{color:var(--ok)}
+.facts{display:flex;flex-wrap:wrap;gap:4px 20px;margin-top:4px;font-size:14px;color:var(--text-3)}
+.facts b{color:var(--text);font-weight:600}
+.facts b.hot{color:var(--accent-2)}
+.actions{display:flex;gap:8px;padding-top:28px}
+.actions .icon-btn[data-act="fav"].on{color:var(--accent-2)}
+.actions .icon-btn[data-act="fav"].on svg{fill:currentColor}
+.scores{margin:0 0 20px}
+.scores>div{border-top:1px solid var(--line-2)}
+@media (max-width:860px){.scores>div+div{border-top:0}}
+.tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:24px}
+.tag{height:24px;display:inline-flex;align-items:center;padding:0 8px;border-radius:var(--r);font-size:12px;font-weight:500;color:var(--text-2);background:rgba(255,255,255,.04);border:1px solid var(--line-2)}
+.video{position:relative;display:block;aspect-ratio:16/9;border-radius:var(--r-lg);overflow:hidden;background:var(--panel);border:1px solid var(--line-2);transition:border-color .12s}
+.video:hover{border-color:var(--accent)}
+.video img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s}
+.video img.ld{opacity:.85}
+.video:hover img.ld{opacity:.95}
+.video .shade{position:absolute;inset:0;z-index:1;background:linear-gradient(to top,rgba(13,13,15,.8) 0%,rgba(13,13,15,0) 35%)}
+.video .center{position:absolute;inset:0;z-index:2;display:grid;place-items:center}
+.play{width:64px;height:44px;border-radius:var(--r-lg);display:grid;place-items:center;background:var(--accent);transition:background .12s}
+.play svg{width:18px;height:18px;fill:#fff;stroke:none;margin-left:2px}
+.video:hover .play{background:#6E4FF3}
+.vbar{position:absolute;left:0;right:0;bottom:0;z-index:2;display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:12px 16px}
+.vwho{min-width:0;font-size:13px;color:var(--text-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vwho b{color:#fff;font-weight:500}
+.vtag{flex-shrink:0;font-size:12px;color:rgba(255,255,255,.6)}
+.h3{display:flex;align-items:baseline;gap:8px;font-size:13px;font-weight:600;color:var(--text)}
+.h3 svg{display:none}
+.block{margin-top:32px}
+.block>.h3{padding-bottom:8px;border-bottom:1px solid var(--line-2)}
+.kv{display:grid;grid-template-columns:1fr 1fr;column-gap:40px}
+.kv>div{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:48px;border-bottom:1px solid var(--line-2)}
+.kv dt{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-3)}
+.kv dt .info{color:var(--text-4);font-size:12px;cursor:help;display:inline-flex}
+.kv dd{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:600;letter-spacing:-.01em;color:#fff;font-variant-numeric:tabular-nums}
+.kv dd.muted{color:var(--text-4)}
+.mini{width:24px;height:24px;border-radius:var(--r);display:grid;place-items:center;color:var(--text-3);border:1px solid var(--line-2);font-size:12px;transition:color .12s,border-color .12s}
+.mini:hover{color:#fff;border-color:var(--accent)}
+.hist{list-style:none;margin-top:8px;border-left:1px solid var(--line-2)}
+.hist li{display:flex;justify-content:space-between;gap:16px;padding:8px 0 8px 16px;font-size:14px;color:var(--text)}
+.hist li b{color:#fff;font-weight:600}
+.hist li span{color:var(--text-3);font-size:13px;white-space:nowrap}
+.hist li.now{box-shadow:-1px 0 0 var(--accent)}
+.hist li>div{min-width:0;color:var(--text-2)}
+.hist li .flag{display:inline-block;margin-left:8px;padding:1px 6px;border-radius:3px;border:1px solid rgba(251,191,36,.35);color:var(--warn);font-style:normal;font-size:12px;font-weight:500}
+.hist li.mark{box-shadow:-1px 0 0 var(--warn)}
+.hist-none{margin-top:8px;font-size:13px;color:var(--text-3)}
+.hist-btn{margin:8px 0 0 16px}
+.hist-block>.h3{justify-content:space-between;align-items:center}
+.hist-tog{display:inline-flex;align-items:center;gap:4px;padding:2px 4px;margin-right:-4px;border-radius:var(--r);font-size:13px;font-weight:500;color:var(--text-3);transition:color .12s}
+.hist-tog:hover{color:#fff}
+.h3 .hist-tog svg{display:block;width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .15s}
+.hist-tog[aria-expanded="true"] svg{transform:rotate(180deg)}
+
+/* records */
+.rec-head{padding:16px 16px 12px;border-bottom:1px solid var(--line)}
+.rec-head .h3{font-size:14px}
+.rec-head .h3 .count{margin-left:auto;font-size:12px;font-weight:500;color:var(--text-3)}
+.count .n{color:var(--text);font-weight:600}
+.rec-head p{margin-top:2px;font-size:13px;color:var(--text-3)}
+.rec-head p b{color:var(--warn);font-weight:600}
+.rec-list{flex:1}
+.rrow{display:flex;align-items:center;gap:12px;padding:8px 16px;border-bottom:1px solid rgba(255,255,255,.035);transition:background .12s}
+.rrow:hover{background:rgba(255,255,255,.035)}
+.medal{width:20px;flex-shrink:0;text-align:right;font-weight:600;font-size:13px;color:var(--text-3)}
+.medal.m1{color:var(--warn)}.medal.m2{color:var(--silver)}.medal.m3{color:var(--bronze)}
+.rwho{min-width:0;flex:1}
+.rwho b{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rwho small{display:block;font-size:12px;color:var(--text-3)}
+.rpct{font-size:13px;font-weight:600;color:var(--warn)}
+.rpct.full{color:var(--ok)}
+.rec-none{padding:16px;font-size:13px;color:var(--text-3)}
+.rec-foot{padding:16px;display:flex;flex-direction:column;gap:16px;border-top:1px solid var(--line)}
+.submit{width:100%}
+.qs .h3{padding-bottom:4px}
+.qs dl{display:grid;grid-template-columns:1fr}
+.qs dl>div{display:flex;justify-content:space-between;align-items:baseline;height:32px;line-height:32px;border-bottom:1px solid var(--line-2);font-size:13px}
+.qs dt{color:var(--text-3)}
+.qs dd{color:#fff;font-weight:600;font-variant-numeric:tabular-nums}
+.links{display:flex;flex-wrap:wrap;gap:4px}
+.links a{display:inline-flex;align-items:center;gap:4px;height:24px;padding:0 8px;border-radius:var(--r);font-size:12px;font-weight:500;color:var(--text-2);border:1px solid var(--line-2);transition:color .12s,border-color .12s}
+.links a svg{font-size:10px;color:var(--text-4)}
+.links a:hover{color:#fff;border-color:var(--accent)}
+.err{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:16px;color:var(--text-3);font-size:13px}
+.err svg{display:none}
+.sk{border-radius:var(--r);background:rgba(255,255,255,.04)}
+.enter{animation:fade .2s ease both}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+
+/* home (round 8): variant A, same panels/rows as the list and the level page */
+.home{display:none;position:relative;z-index:1;height:calc(100vh - var(--head));height:calc(100dvh - var(--head))}
+body.view-home .home{display:block}
+body.view-home .app{display:none}
+body.view-home .aura img{opacity:0}
+.mosaic{display:none;position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:var(--bg)}
+body.view-home .mosaic{display:block}
+.mosaic-in{position:absolute;left:50%;top:50%;width:150vmax;display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:8px;transform:translate(-50%,-50%) rotate(-8deg);filter:blur(16px);opacity:.32}
+.mosaic-in span{aspect-ratio:16/9;border-radius:var(--r);overflow:hidden;background:var(--raised)}
+.mosaic-in img{width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s}
+.mosaic-in img.ld{opacity:1}
+.mosaic::after{content:"";position:absolute;inset:0;background:rgba(19,19,22,.6)}
+.home-in{max-width:1120px;margin:0 auto;padding:32px 40px 64px}
+.home-hero{max-width:640px;padding:40px 0 8px}
+.home-hero .by{max-width:560px}
+.home-hero .btn{margin-top:20px}
+.home-cols{display:grid;grid-template-columns:minmax(0,1fr) 336px;gap:24px;margin-top:32px;align-items:start}
+.home-cols>section{min-width:0}
+.home .rec-head .h3 .count{margin-left:auto}
+.home .sec{position:static}
+.home .rrow{justify-content:space-between;align-items:baseline}
+.lk{font-size:13px;font-weight:500;color:var(--text);text-align:left;transition:color .12s}
+button.lk:hover{color:var(--accent-2)}
+.rwho .ctx{display:block;font-size:12px;color:var(--text-3)}
+.chg{flex-shrink:0;font-size:13px;color:var(--text-3);white-space:nowrap}
+.chg b{font-weight:600;color:var(--text)}
+.chg.up b{color:var(--ok)}
+.chg.add b{color:var(--accent-2)}
+.home .side-foot{justify-content:space-between}
+.home .side-foot .more{font-size:12px;font-weight:500;color:var(--accent-2);transition:color .12s}
+.home .side-foot .more:hover{color:#fff}
+.home-foot{margin-top:24px;font-size:12px;color:var(--text-4)}
+/* round 10: single centered column (hero + recent changes) */
+.home-in{max-width:808px}
+.home-hero{max-width:none}
+.home-cols{grid-template-columns:minmax(0,1fr)}
+/* round 9: compact recent changes (as on demonlist.org), own scroll */
+.cl-scroll{max-height:min(60vh,600px)}
+.cl-day{display:flex;align-items:center;gap:12px;padding:12px 16px 4px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-4)}
+.cl-day::before,.cl-day::after{content:"";flex:1;height:1px;background:var(--line)}
+.crow{display:flex;align-items:center;gap:10px;padding:6px 16px;min-width:0}
+.crow:hover{background:rgba(255,255,255,.035)}
+.cdot{flex-shrink:0;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-size:11px;color:var(--ok);background:rgba(52,211,153,.14)}
+.cdot.dn{color:var(--warn);background:rgba(251,191,36,.14)}
+.cdot.add::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.cdot .i{stroke-width:3}
+.ctext{min-width:0;font-size:12px;color:var(--text-4);line-height:1.45}
+.ctext .lk{font-size:13px;font-weight:500;color:var(--text);margin-right:6px}
+.ctext .lk:hover{color:var(--accent-2)}
+.ctext .nb{color:var(--text-3)}
+.ctext .nl{color:var(--text-3)}
+.cl-end{padding:12px 16px;font-size:12px;color:var(--text-4);text-align:center}
+@media (max-width:860px){.cl-scroll{max-height:60vh}}
+
+@media (max-width:1100px){.home-in{padding:24px 24px 48px}}
+@media (max-width:860px){
+  .home{height:auto;padding-top:var(--head)}
+  .home.scroll{overflow:visible}
+  .home-in{padding:16px 16px 48px}
+  .home-hero{padding:24px 0 0}
+  .home-cols{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:24px}
+  .mosaic-in{width:220vmax;grid-template-columns:repeat(6,minmax(0,1fr))}
+}
+/* toast */
+.toast{position:fixed;left:50%;bottom:24px;z-index:100;transform:translate(-50%,8px);opacity:0;pointer-events:none;display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:var(--r);background:var(--raised-2);border:1px solid #33333B;color:#fff;font-size:13px;font-weight:500;transition:opacity .2s,transform .2s}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.toast svg{color:var(--ok)}
+
+/* mobile sheet */
+.sheet{position:fixed;top:calc(var(--head) + 6px);right:12px;z-index:40;width:min(240px,calc(100% - 24px));padding:6px;border:1px solid var(--line);border-radius:var(--r-lg);background:rgba(23,23,27,.98);opacity:0;pointer-events:none;transform:translateY(-4px);transition:opacity .15s,transform .15s}
+.sheet.open{opacity:1;pointer-events:auto;transform:none}
+.sheet .nav{flex-direction:column;align-items:stretch}
+.sheet .nav a{height:36px;padding:0 10px;font-size:13px}
+.sheet .sheet-f{display:flex;justify-content:flex-end;margin-top:6px;padding:8px 4px 2px;border-top:1px solid var(--line)}
+@media (min-width:1101px){.sheet,.sheet.open{display:none}}
+
+/* responsive */
+.rec-inline{display:none;margin-top:32px;border-radius:var(--r-lg);border:1px solid var(--line);background:var(--panel-a);overflow:hidden}
+.hpanel{border-radius:var(--r-lg);border:1px solid var(--line);background:var(--panel-a);overflow:hidden}
+@media (max-width:1360px){
+  .app{grid-template-columns:320px minmax(0,1fr)}
+  .rec{display:none}
+  .rec-inline{display:block}
+}
+@media (max-width:1100px){
+  .top .nav{display:none}
+  .menu-btn{display:grid}
+  .detail{padding:24px 24px 48px}
+  .title{font-size:36px}
+}
+@media (max-width:860px){
+  html,body{height:auto}
+  body{overflow:visible}
+  .top{position:fixed;top:0;left:0;right:0;padding:0 16px}
+  .login-top{display:none}
+  .app{display:block;height:auto;padding-top:var(--head)}
+  .side{border-right:0;min-height:calc(100dvh - var(--head));background:rgba(19,19,22,.78);transition:opacity .25s}
+  body.detail-open .side{opacity:0}
+  .side-head{position:sticky;top:var(--head);z-index:5;background:rgba(19,19,22,.94);border-bottom:1px solid var(--line)}
+  .sec{top:calc(var(--head) + var(--sh,130px))}
+  .side .scroll{overflow:visible}
+  .side-foot{position:sticky;bottom:0;background:rgba(19,19,22,.94)}
+  .main{position:fixed;inset:var(--head) 0 0 0;z-index:20;background:transparent;transform:translateX(100%);transition:transform .25s ease;visibility:hidden}
+  body.detail-open .main{transform:none;visibility:visible}
+  body.detail-open{overflow:hidden}
+  .main.scroll{overflow-y:auto}
+  .mob-back{display:flex;position:sticky;top:0;z-index:10;align-items:center;justify-content:space-between;gap:8px;height:48px;padding:0 16px;background:rgba(19,19,22,.9);border-bottom:1px solid var(--line)}
+  .mob-back .pos{font-size:13px;color:var(--text-3)}
+  .detail{padding:16px 16px 48px}
+  .hero{grid-template-columns:1fr}
+  .title{font-size:30px}
+  .actions{padding-top:8px}
+  .vtag{display:none}
+  .vbar{padding:8px 12px}
+  .play{width:56px;height:40px}
+  .kv{grid-template-columns:1fr}
+  .kv dd{font-size:18px}
+  .block{margin-top:24px}
+}
+@media (max-width:380px){ .thumb{display:none} }
+@media (prefers-reduced-motion:reduce){ *,*::before,*::after{animation:none!important;transition:none!important} }
+
+/* round 11: leaderboard (layout after Global Shitty List: players left, profile right) */
+.lb{display:none;position:relative;z-index:1;height:calc(100vh - var(--head));height:calc(100dvh - var(--head))}
+body.view-lb .lb{display:block}
+body.view-lb .app,body.view-lb .home{display:none}
+body.view-lb .aura img{opacity:0}
+body.view-lb .mosaic{display:block}
+.lb-in{max-width:1200px;height:100%;margin:0 auto;padding:24px 40px;display:flex;flex-direction:column;gap:16px}
+.lb-top{display:flex;align-items:baseline;gap:12px}
+.lb-top h1{font-size:20px;font-weight:700;letter-spacing:-.01em;color:#fff}
+.lb-top p{font-size:13px;color:var(--text-3)}
+.lb-cols{flex:1;min-height:0;display:grid;grid-template-columns:360px minmax(0,1fr);gap:16px}
+.lb-cols>section{display:flex;flex-direction:column;min-height:0}
+.lb-head{padding:12px;border-bottom:1px solid var(--line)}
+.lb-sub{display:flex;justify-content:space-between;align-items:baseline;margin-top:10px;padding:0 4px;font-size:12px;color:var(--text-4)}
+.lb-sub b{color:var(--text-2);font-weight:600}
+.lb-rows{flex:1;min-height:0}
+.lrow{position:relative;width:100%;display:flex;align-items:center;gap:12px;padding:8px 16px 8px 8px;text-align:left;border-bottom:1px solid rgba(255,255,255,.035);transition:background .12s}
+.lrow:hover{background:rgba(255,255,255,.035)}
+.lrow.sel{background:rgba(124,92,252,.12)}
+.lrow.sel::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--accent)}
+.lrow .rank{font-size:13px}
+.lrow.sel .rank:not(.r1):not(.r2):not(.r3){color:#fff}
+.lrow .lnm{flex-direction:row;align-items:center;gap:8px}
+.lrow .lnm .flag{flex-shrink:0;width:16px;height:12px;display:flex}
+.fl{display:block;flex-shrink:0;width:16px;height:12px;border-radius:2px;object-fit:cover}
+.lrow .lnm b{min-width:0}
+.lrow .lnm small{flex-shrink:0;display:inline;font-weight:400}
+.lrow .lp{flex-shrink:0;font-size:13px;font-weight:600;color:var(--accent-2)}
+.lb-ph{padding:20px 20px 16px;border-bottom:1px solid var(--line)}
+.lb-name{font-size:24px;font-weight:700;line-height:1.2;letter-spacing:-.01em;color:#fff;overflow-wrap:anywhere}
+.lb-meta{margin-top:4px;font-size:13px;color:var(--text-3)}
+.lb-meta b{color:var(--text);font-weight:600}
+.lb-stats{display:flex;flex-wrap:wrap;gap:4px 16px;margin-top:12px;font-size:13px;color:var(--text-3)}
+.lb-stats b{color:#fff;font-weight:600}
+.lb-hard{display:block;width:100%;margin-top:16px;padding:10px 12px;text-align:left;border-radius:var(--r);border:1px solid var(--line-2);background:rgba(19,19,22,.5);transition:border-color .12s}
+.lb-hard:hover{border-color:var(--accent)}
+.lb-hard small{display:block;font-size:11px;font-weight:500;color:var(--text-4)}
+.lb-hard b{font-size:14px;font-weight:600;color:var(--text)}
+.lb-lq{display:flex;align-items:center;gap:12px;margin-top:12px}
+.lb-lq span{flex-shrink:0;font-size:12px;color:var(--text-4)}
+.lb-pb{flex:1;min-height:0;padding:4px 20px 24px}
+.lb-sec{padding-top:16px}
+.lb-sec>h3{display:flex;align-items:baseline;gap:8px;margin-bottom:8px;font-size:13px;font-weight:600;color:var(--text)}
+.lb-sec>h3 em::before{content:"·";margin-right:8px;color:var(--text-4)}
+.lb-sec>h3 em{font-style:normal;font-size:12px;font-weight:500;color:var(--text-4)}
+.lb-two{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:16px;margin-top:8px}
+.lb-two h4{margin-bottom:6px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-4)}
+.lb-chips{display:flex;flex-wrap:wrap;gap:4px}
+.lb-chips .tag{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block;line-height:22px}
+button.tag{cursor:pointer;transition:color .12s,border-color .12s}
+button.tag:hover{color:#fff;border-color:var(--accent)}
+.tag i{font-style:normal;color:var(--text-4);margin-left:4px}
+.lb-none{font-size:12px;color:var(--text-4)}
+@media (max-width:1100px){.lb-in{padding:16px 24px}.lb-cols{grid-template-columns:320px minmax(0,1fr)}}
+@media (max-width:860px){
+  .lb{height:auto;padding-top:var(--head)}
+  .lb-in{height:auto;padding:16px 16px 48px}
+  .lb-cols{display:block}
+  .lb-rows.scroll,.lb-pb.scroll{overflow:visible}
+  .lb-prof{display:none!important}
+  body.lb-open .lb-list,body.lb-open .lb-top{display:none!important}
+  body.lb-open .lb-prof{display:flex!important}
+  .lb .hpanel.lb-prof{overflow:visible}
+  .lb .mob-back{top:var(--head);margin:-1px -1px 0;border-radius:var(--r-lg) var(--r-lg) 0 0}
+  .lb-ph{padding:16px}
+  .lb-pb{padding:4px 16px 24px}
+  .lb-two{grid-template-columns:1fr;gap:12px}
+}
+
+/* round 12: sign in / sign up (layout after demonlist.org, no backend yet) */
+.auth{display:none;position:relative;z-index:1;height:calc(100vh - var(--head));height:calc(100dvh - var(--head))}
+body.view-auth .auth{display:block}
+body.view-auth .app,body.view-auth .home,body.view-auth .lb{display:none}
+body.view-auth .aura img{opacity:0}
+body.view-auth .mosaic{display:block}
+.auth-in{max-width:640px;margin:0 auto;padding:64px 40px 64px}
+.auth-card{display:none;padding:28px;border-radius:var(--r-lg);border:1px solid var(--line);background:var(--panel-a)}
+body.auth-signin #signinCard,body.auth-signup #signupCard{display:block}
+.auth-card h1{font-size:20px;font-weight:700;letter-spacing:-.01em;color:#fff}
+.auth-card>p{margin-top:2px;font-size:13px;color:var(--text-3)}
+.auth-form{display:grid;gap:16px;margin-top:24px}
+.auth-form .wide{grid-column:1/-1}
+.fld label{display:block;margin-bottom:6px;font-size:13px;font-weight:500;color:var(--text-2)}
+.fld .search input{height:40px;padding:0 12px 0 34px;font-size:14px}
+.auth-form .btn{height:40px;font-size:14px;width:100%}
+.auth-check{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-3);cursor:pointer}
+.auth-check input{width:16px;height:16px;accent-color:var(--accent);flex-shrink:0}
+.auth-sep{display:flex;align-items:center;gap:12px;font-size:12px;color:var(--text-4)}
+.auth-sep::before,.auth-sep::after{content:"";flex:1;height:1px;background:var(--line)}
+.auth-alt{display:grid;gap:8px}
+.auth-links{margin-top:24px;padding-top:16px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 16px;font-size:13px;color:var(--text-3)}
+.alink{color:var(--accent-2);font-weight:500;transition:color .12s}
+.alink:hover{color:#fff}
+@media (max-width:860px){
+  .auth{height:auto;padding-top:var(--head)}
+  .auth-in{padding:16px 16px 48px}
+  .auth-card{padding:24px 16px}
+}
+</style>
+</head>
+<body>
+
+<div class="aura" aria-hidden="true"><img id="auraA" alt=""><img id="auraB" alt=""></div>
+<header class="top">
+  <div style="display:flex;align-items:center;gap:28px">
+    <a class="brand" href="#" id="home" aria-label="Demonhub home">
+      <span class="logo"><svg viewBox="0 0 14 14"><path d="M7 1.6L12.4 7L7 12.4L1.6 7Z" fill="none" stroke="#fff" stroke-width="1.9" stroke-linejoin="round"/><path d="M7 5L9 7L7 9L5 7Z" fill="#fff"/></svg></span>
+      <span class="brand-name">Demonhub</span>
+    </a>
+    <nav class="nav" aria-label="Primary" id="nav"></nav>
+  </div>
+  <div class="top-right">
+    <button class="btn btn-ghost login-top" data-view="signin">Login</button>
+    <button class="icon-btn menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false"></button>
+  </div>
+</header>
+<div class="sheet" id="sheet"><nav class="nav" aria-label="Mobile" id="nav2"></nav><div class="sheet-f"><button class="btn btn-ghost" data-view="signin">Login</button></div></div>
+
+<div class="mosaic" aria-hidden="true"><div class="mosaic-in" id="mosaic"></div></div>
+<main class="home scroll" id="homeView" aria-label="Home">
+  <div class="home-in">
+    <section class="home-hero">
+      <div class="crumb" id="homeCrumb">Classic list</div>
+      <h1 class="title">Demonhub</h1>
+      <p class="by">The hardest Geometry Dash demons, ranked. Placements, points and records come live from the Global Demonlist.</p>
+      <button class="btn btn-fire" data-view="list">Open the list</button>
+    </section>
+    <div class="home-cols">
+      <section class="hpanel" aria-labelledby="clTitle"><div class="rec-head"><h2 class="h3"><span id="clTitle">Recent changes</span></h2><p>Placement changes on the Global Demonlist</p></div><div class="cl-scroll scroll" id="clBody"></div><div id="clMore"></div></section>
+    </div>
+    <p class="home-foot" id="homeFoot"></p>
+  </div>
+</main>
+
+<main class="lb" id="lbView" aria-label="Leaderboard">
+  <div class="lb-in">
+    <div class="lb-top"><h1>Leaderboard</h1><p>Classic list · players by points</p></div>
+    <div class="lb-cols">
+      <section class="hpanel lb-list" aria-label="Players">
+        <div class="lb-head"><label class="search"><span class="sr">Search players</span><svg class="i" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg><input id="lbQ" type="search" placeholder="Search players..." autocomplete="off"></label><div class="lb-sub"><span id="lbCount">&nbsp;</span><span>Points</span></div></div>
+        <div class="lb-rows scroll" id="lbRows"></div>
+      </section>
+      <section class="hpanel lb-prof" id="lbProf" aria-live="polite"></section>
+    </div>
+  </div>
+</main>
+
+<main class="auth scroll" id="authView" aria-label="Account">
+  <div class="auth-in">
+    <section class="auth-card" id="signinCard" aria-labelledby="siT">
+      <h1 id="siT">Sign in</h1><p>Sign in to your Demonhub account</p>
+      <form class="auth-form" data-auth novalidate>
+        <div class="fld"><label for="siUser">Username or email</label><div class="search"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><input id="siUser" type="text" placeholder="Username or email" autocomplete="username" required></div></div>
+        <div class="fld"><label for="siPass">Password</label><div class="search"><svg class="i" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><input id="siPass" type="password" placeholder="Password" autocomplete="current-password" required></div></div>
+        <button class="btn btn-fire" type="submit">Sign in</button>
+        <div class="auth-sep">or</div>
+        <div class="auth-alt"><button class="btn btn-ghost" type="button" data-soon-acc>Sign in with Google</button><button class="btn btn-ghost" type="button" data-soon-acc>Sign in with Discord</button></div>
+      </form>
+      <div class="auth-links"><span>Don't have an account? <a class="alink" href="#/signup" data-view="signup">Sign up</a></span><a class="alink" href="#" data-soon-acc>Forgot your password?</a></div>
+    </section>
+    <section class="auth-card" id="signupCard" aria-labelledby="suT">
+      <h1 id="suT">Sign up</h1><p>Create a Demonhub account</p>
+      <form class="auth-form" data-auth novalidate>
+        <div class="fld"><label for="suUser">Username</label><div class="search"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><input id="suUser" type="text" placeholder="Username" autocomplete="username" required></div></div>
+        <div class="fld"><label for="suMail">Email</label><div class="search"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><input id="suMail" type="email" placeholder="Email" autocomplete="email" required></div></div>
+        <div class="fld"><label for="suPass">Password</label><div class="search"><svg class="i" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><input id="suPass" type="password" placeholder="Password" autocomplete="new-password" required></div></div>
+        <div class="fld"><label for="suPass2">Repeat password</label><div class="search"><svg class="i" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><input id="suPass2" type="password" placeholder="Repeat password" autocomplete="new-password" required></div></div>
+        <label class="auth-check wide"><input type="checkbox" id="suAgree"><span>I have read and agree to the <a class="alink" href="#" data-soon="Submission guidelines">submission guidelines</a></span></label>
+        <button class="btn btn-fire wide" type="submit">Sign up</button>
+      </form>
+      <div class="auth-links"><span>Already have an account? <a class="alink" href="#/signin" data-view="signin">Sign in</a></span></div>
+    </section>
+  </div>
+</main>
+
+<div class="app">
+  <aside class="col side" aria-label="Demon list">
+    <div class="side-head">
+      <div class="seg" id="seg" data-v="classic" role="group" aria-label="List type">
+        <span class="pill"></span>
+        <button aria-pressed="true" data-v="classic">Classic</button>
+        <button aria-pressed="false" data-v="platformer">Platformer</button>
+      </div>
+      <div class="search-row">
+        <label class="search"><span class="sr">Search levels</span><svg class="i" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg><input id="q" type="search" placeholder="Search levels..." autocomplete="off"><span class="kbd">/</span></label>
+        <button class="icon-btn" id="filterBtn" aria-label="Sort options" aria-expanded="false"></button>
+        <button class="icon-btn" id="recentBtn" aria-label="Sort by recently added" aria-pressed="false"></button>
+      </div>
+      <div class="sortbar" id="sortbar" role="group" aria-label="Sort by">
+        <button class="chip" data-sort="placement" aria-pressed="true">Placement</button>
+        <button class="chip" data-sort="recent" aria-pressed="false">Recently added</button>
+        <button class="chip" data-sort="short" aria-pressed="false">Shortest</button>
+        <button class="chip" data-sort="long" aria-pressed="false">Longest</button>
+        <button class="chip" data-sort="fav" aria-pressed="false">♥ Favorites</button>
+      </div>
+    </div>
+    <div class="scroll list" id="list" role="listbox" aria-label="Levels"></div>
+    <div class="side-foot"><span class="tnum" id="countTxt"></span></div>
+  </aside>
+
+  <main class="col main scroll" id="main" aria-live="polite">
+    <div class="mob-back"><button class="btn btn-ghost" id="backBtn"><svg class="i" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>All levels</button><span class="pos" id="mobPos"></span></div>
+    <div class="detail" id="detail"></div>
+  </main>
+
+  <aside class="col rec" aria-label="Records" id="recAside"></aside>
+</div>
+<div class="toast" id="toast" role="status"><svg class="i" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span id="toastTxt"></span></div>
+
+<script>(()=>{let d=null;try{const x=new XMLHttpRequest();x.open("GET","data.json",false);x.send();if(x.status===200)d=JSON.parse(x.responseText)}catch(e){}window.DH_DATA=d})();</script>
+<script>
+(()=>{
+"use strict";
+const SNAPSHOT_DATE=DH_D.date||"2026-10-09";
+const SNAPSHOT=DH_D.snapshot||[];
+const AREDL_SNAP=DH_D.aredl||{};
+const AREDL_API="https://api.aredl.net/v2/api/aredl/levels";
+const ART="https://raw.githubusercontent.com/All-Rated-Extreme-Demon-List/Thumbnails/main/levels/full/";
+const API="https://api.demonlist.org";
+const TAGS=["2.2","XL","Fast-Paced","High CPS","Nerve Control","Ship","Wave"];
+const ISO={"Afghanistan":"AF","Albania":"AL","Algeria":"DZ","Andorra":"AD","Argentina":"AR","Armenia":"AM","Aruba":"AW","Australia":"AU","Austria":"AT","Azerbaijan":"AZ","Bahamas":"BS","Bahrain":"BH","Bangladesh":"BD","Belarus":"BY","Belgium":"BE","Bolivia":"BO","Bosnia-and-Herzegovina":"BA","Brazil":"BR","Bulgaria":"BG","Cambodia":"KH","Canada":"CA","Cape-Verde":"CV","Chile":"CL","China":"CN","Colombia":"CO","Costa-Rica":"CR","Croatia":"HR","Cuba":"CU","Cyprus":"CY","Czech-Republic":"CZ","Denmark":"DK","Dominican-Republic":"DO","Ecuador":"EC","Egypt":"EG","El-Salvador":"SV","Estonia":"EE","Finland":"FI","France":"FR","Gabon":"GA","Georgia":"GE","Germany":"DE","Ghana":"GH","Gibraltar":"GI","Greece":"GR","Greenland":"GL","Guam":"GU","Guatemala":"GT","Guernsey":"GG","Guyana":"GY","Haiti":"HT","Honduras":"HN","Hong-Kong":"HK","Hungary":"HU","Iceland":"IS","India":"IN","Indonesia":"ID","Iran":"IR","Iraq":"IQ","Ireland":"IE","Isle-of-Man":"IM","Israel":"IL","Italy":"IT","Jamaica":"JM","Japan":"JP","Jordan":"JO","Kazakhstan":"KZ","Kenya":"KE","Kosovo":"XK","Kuwait":"KW","Kyrgyzstan":"KG","Laos":"LA","Latvia":"LV","Lebanon":"LB","Libya":"LY","Liechtenstein":"LI","Lithuania":"LT","Luxembourg":"LU","Macedonia":"MK","North-Macedonia":"MK","Malaysia":"MY","Maldives":"MV","Mali":"ML","Malta":"MT","Mexico":"MX","Moldova":"MD","Mongolia":"MN","Montenegro":"ME","Morocco":"MA","Myanmar":"MM","Netherlands":"NL","New-Zealand":"NZ","Nicaragua":"NI","Nigeria":"NG","Norway":"NO","Oman":"OM","Pakistan":"PK","Palestine":"PS","Panama":"PA","Paraguay":"PY","Peru":"PE","Philippines":"PH","Poland":"PL","Portugal":"PT","Puerto-Rico":"PR","Qatar":"QA","Republic-of-the-Congo":"CG","Romania":"RO","Russia":"RU","Saint-Vincent-and-the-Grenadines":"VC","San-Marino":"SM","Saudi-Arabia":"SA","Senegal":"SN","Serbia":"RS","Singapore":"SG","Slovakia":"SK","Slovenia":"SI","Somalia":"SO","South-Africa":"ZA","South-Korea":"KR","Spain":"ES","Sweden":"SE","Switzerland":"CH","Syria":"SY","Taiwan":"TW","Tajikistan":"TJ","Thailand":"TH","Togo":"TG","Trinidad-and-Tobago":"TT","Tunisia":"TN","Turkey":"TR","Turkmenistan":"TM","Ukraine":"UA","United-Arab-Emirates":"AE","United-Kingdom":"GB","United-States":"US","Uruguay":"UY","Uzbekistan":"UZ","Venezuela":"VE","Vietnam":"VN","Yemen":"YE","Zambia":"ZM"};
+const SUBFLAG={England:"gb-eng",Scotland:"gb-sct",Wales:"gb-wls"};
+const FLAGS=Object.assign(Object.fromEntries(Object.entries(ISO).map(([k,v])=>[k,v.toLowerCase()])),SUBFLAG);
+const flagImg=k=>{const f=FLAGS[k];if(!f)return"";const n=esc(String(k).replace(/-/g," "));return `<img class="fl" src="https://flagcdn.com/w40/${f}.png" srcset="https://flagcdn.com/w80/${f}.png 2x" width="16" height="12" loading="lazy" alt="${n}" title="${n}" onerror="this.style.visibility='hidden'">`};
+const P={
+ search:'<path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/>',
+ funnel:'<path d="M10 20a1 1 0 0 0 .553.895l2 1A1 1 0 0 0 14 21v-7a2 2 0 0 1 .517-1.341L21.74 4.67A1 1 0 0 0 21 3H3a1 1 0 0 0-.742 1.67l7.225 7.989A2 2 0 0 1 10 14z"/>',
+ clock:'<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+ trophy:'<path d="M10 14.66V17a1 1 0 0 1-1 1 2 2 0 0 0-2 2v2"/><path d="M14 14.66V17a1 1 0 0 0 1 1 2 2 0 0 1 2 2v2"/><path d="M17.916 10H19.5A2.5 2.5 0 0 0 22 7.5V5a1 1 0 0 0-1-1h-3"/><path d="M4 22h16"/><path d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"/><path d="M6.084 10H4.5A2.5 2.5 0 0 1 2 7.5V5a1 1 0 0 1 1-1h3"/>',
+ trend:'<path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/>',
+ heart:'<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>',
+ eye:'<path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/>',
+ copy:'<rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>',
+ info:'<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>',
+ user:'<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+ plus:'<path d="M5 12h14"/><path d="M12 5v14"/>',
+ chart:'<path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>',
+ alert:'<circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/>',
+ refresh:'<path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/>',
+ menu:'<path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/>',
+ x:'<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+ chevD:'<path d="m6 9 6 6 6-6"/>', up:'<path d="m18 15-6-6-6 6"/>', down:'<path d="m6 9 6 6 6-6"/>',
+ ext:'<path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>',
+ cal:'<rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/>',
+ hash:'<line x1="4" x2="20" y1="9" y2="9"/><line x1="4" x2="20" y1="15" y2="15"/><line x1="10" x2="8" y1="3" y2="21"/><line x1="16" x2="14" y1="3" y2="21"/>',
+ play:'<path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/>',
+ loader:'<path d="M21 12a9 9 0 1 1-6.219-8.56"/>'
+};
+const ic=(n,c="")=>`<svg class="i ${c}" viewBox="0 0 24 24" aria-hidden="true">${P[n]}</svg>`;
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+function ytId(u){if(!u)return null;for(const r of[/youtu\.be\/([^?&\s]+)/,/youtube\.com\/watch\?.*v=([^&\s]+)/,/youtube\.com\/embed\/([^?&\s]+)/,/youtube\.com\/shorts\/([^?&\s]+)/]){const m=u.match(r);if(m)return m[1]}return null}
+const thumb=(l,q="hqdefault")=>{const id=ytId(l.verification_url);return id?`https://img.youtube.com/vi/${id}/${q}.jpg`:""};
+const watchUrl=l=>{const id=ytId(l.verification_url);return id?`https://www.youtube.com/watch?v=${id}`:(l.verification_url||"#")};
+const fmt2=n=>parseFloat(n).toFixed(2);
+/* demonlist.org: a record at the list percent is worth points/4, only when list_percent!==100 and placement<=150 (Extended List); otherwise only 100% counts */
+const minScore=l=>{const p=parseFloat(l.points);return isNaN(p)||+l.list_percent===100||l.placement>150?null:p/4};
+const fmtScore=v=>String(+v.toFixed(4));
+const dShort=d=>new Date(d).toLocaleDateString("en-US",{timeZone:"UTC",year:"numeric",month:"short",day:"numeric"});
+const realDate=d=>d&&!/^2020-01-01/.test(d)?d:null; /* demonlist.org uses 2020-01-01T00:00:00Z as a placeholder for levels added before tracking */
+const dLong=d=>new Date(d).toLocaleDateString("en-US",{timeZone:"UTC",year:"numeric",month:"long",day:"numeric"});
+const fromSnap=a=>({id:a[0],ingame_id:a[1],placement:a[2],name:a[3],points:a[4],list_percent:a[5],length:a[6],holder:a[7],verifier:{username:a[8]},verification_url:a[9],date_created:/T/.test(a[10])?a[10]:a[10]+"T12:00:00Z"});
+
+/* ---------- state ---------- */
+const S={aredl:AREDL_SNAP,levels:SNAPSHOT.map(fromSnap),live:false,loading:true,sel:0,histOpen:false,q:"",mode:"classic",sort:"placement",records:new Map(),favs:new Set((()=>{try{return JSON.parse(localStorage.getItem("dh-favs")||"[]")}catch(_){return[]}})())};
+
+/* ---------- static UI ---------- */
+const NAV=[["Demon List",0,0,"list"],["Leaderboard",0,0,"lb"],["Packs"],["Challenges",0,1],["Submit"]];
+const navHTML=NAV.map(([t,a,dd,v])=>`<a href="${v==="home"?"./":v==="lb"?"#/leaderboard":v?"#/classic/1":"#"}" ${v?`data-view="${v}"`:`data-soon="${t}"`}>${t}${dd?ic("chevD"):""}</a>`).join("");
+$("#nav").innerHTML=navHTML;$("#nav2").innerHTML=navHTML;
+$("#menuBtn").innerHTML=ic("menu");$("#filterBtn").innerHTML=ic("funnel");$("#recentBtn").innerHTML=ic("clock");
+
+let toastT;function toast(t){$("#toastTxt").textContent=t;const el=$("#toast");el.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove("show"),2200)}
+document.addEventListener("click",e=>{const s=e.target.closest("[data-soon]");if(s){e.preventDefault();toast(`${s.dataset.soon} isn't available yet`)}});
+$("#home").addEventListener("click",e=>{e.preventDefault();showHome(view!=="home")});
+$("#menuBtn").addEventListener("click",()=>{const o=$("#sheet").classList.toggle("open");$("#menuBtn").innerHTML=ic(o?"x":"menu");$("#menuBtn").setAttribute("aria-expanded",o)});
+{const mqD=matchMedia("(min-width:1101px)");const f=()=>{if(mqD.matches)closeSheet()};mqD.addEventListener?mqD.addEventListener("change",f):mqD.addListener(f);window.addEventListener("resize",f)}
+document.addEventListener("click",e=>{if($("#sheet").classList.contains("open")&&!e.composedPath().some(n=>n.id==="sheet"||n.id==="menuBtn"))closeSheet()});
+
+/* ---------- list ---------- */
+function visible(){
+  if(S.mode==="platformer")return[];
+  const q=S.q.trim().toLowerCase();
+  let a=S.levels.filter(l=>l.name.toLowerCase().includes(q));
+  if(S.sort==="recent")a=[...a].sort((x,y)=>new Date(y.date_created)-new Date(x.date_created));
+  else if(S.sort==="short")a=[...a].sort((x,y)=>x.length-y.length);
+  else if(S.sort==="long")a=[...a].sort((x,y)=>y.length-x.length);
+  else if(S.sort==="fav")a=a.filter(l=>S.favs.has(l.id));
+  return a;
+}
+const SECTIONS=[[1,75,"Main List"],[76,150,"Extended List"],[151,Infinity,"Full List"]];
+function rowHTML(l,home){
+  const i=S.levels.indexOf(l),r=l.placement,t=thumb(l,"mqdefault");
+  return home?`<button class="row" data-open="${l.id}">`+rowInner(l,r,t):`<button class="row${i===S.sel?" sel":""}" role="option" aria-selected="${i===S.sel}" data-i="${i}">`+rowInner(l,r,t);
+}
+function rowInner(l,r,t){
+  return `
+    <span class="rank tnum ${r<=3?"r"+r:""}">${r}</span>
+    <span class="thumb">${t?`<img loading="lazy" decoding="async" alt="" src="${t}" onload="this.classList.add('ld')" onerror="this.remove()">`:""}</span>
+    <span class="meta"><b>${esc(l.name)}${S.favs.has(l.id)?'<span class="fav-dot">♥</span>':""}</b><small><span class="h">${esc(l.holder)}</span><span aria-hidden="true">·</span><span class="v" title="Verifier">${esc(l.verifier.username)}</span></small></span>
+    ${(()=>{const m=minScore(l);return `<span class="pts" title="${m!=null?`${fmt2(m)} at ${l.list_percent}% — `:""}${fmt2(l.points)} for 100%"><span class="tnum">${m!=null?`<i>${fmt2(m)}</i><i class="dash">—</i>`:""}<b>${fmt2(l.points)}</b></span><small>points</small></span>`})()}
+  </button>`;
+}
+function renderList(){
+  const el=$("#list"),v=visible();
+  $("#countTxt").textContent=`${v.length}/${S.levels.length} levels`;
+  if(S.mode==="platformer"){el.innerHTML=`<div class="empty enter"><div class="ico">${ic("trophy")}</div><b>Platformer list</b><p>The data source currently serves the classic list only. Switch back to see all ${S.levels.length} classic demons.</p><button class="btn btn-ghost" id="toClassic">Show classic list</button></div>`;$("#toClassic").onclick=()=>setMode("classic");return}
+  if(!v.length){el.innerHTML=`<div class="empty enter"><div class="ico">${ic(S.sort==="fav"?"heart":"search")}</div><b>${S.sort==="fav"?"No favorites yet":"No levels found"}</b><p>${S.sort==="fav"?"Tap the heart on any level to keep it here.":`Nothing matches “${esc(S.q)}”. Try another name.`}</p></div>`;return}
+  let h="";
+  if(S.sort==="placement"&&!S.q.trim()){
+    for(const[a,b,name] of SECTIONS){const part=v.filter(l=>l.placement>=a&&l.placement<=b);if(!part.length)continue;
+      h+=`<div class="sec"><i></i>${name}<em>#${a}–${b===Infinity?S.levels.length:b}</em></div>`+part.map(rowHTML).join("")}
+  }else{
+    const label={placement:"Search results",recent:"Recently added",short:"Shortest first",long:"Longest first",fav:"Favorites"}[S.sort];
+    h=`<div class="sec"><i></i>${label}<em>${v.length}</em></div>`+v.map(rowHTML).join("");
+  }
+  el.innerHTML=h;
+}
+$("#list").addEventListener("click",e=>{const b=e.target.closest(".row");if(b)select(+b.dataset.i,true)});
+function markSel(){document.querySelectorAll(".row.sel").forEach(r=>{r.classList.remove("sel");r.setAttribute("aria-selected","false")});const r=document.querySelector(`.row[data-i="${S.sel}"]`);if(r){r.classList.add("sel");r.setAttribute("aria-selected","true")}return r}
+
+let qT;$("#q").addEventListener("input",e=>{clearTimeout(qT);qT=setTimeout(()=>{S.q=e.target.value;renderList()},90)});
+function setMode(m){S.mode=m;$("#seg").dataset.v=m;document.querySelectorAll("#seg button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===m));renderList()}
+document.querySelectorAll("#seg button").forEach(b=>b.onclick=()=>setMode(b.dataset.v));
+function setSort(s){S.sort=s;document.querySelectorAll("#sortbar .chip").forEach(c=>c.setAttribute("aria-pressed",c.dataset.sort===s));$("#recentBtn").classList.toggle("on",s==="recent");$("#recentBtn").setAttribute("aria-pressed",s==="recent");renderList();$("#list").scrollTop=0}
+document.querySelectorAll("#sortbar .chip").forEach(c=>c.onclick=()=>setSort(c.dataset.sort));
+$("#filterBtn").onclick=()=>{const o=$("#sortbar").classList.toggle("open");$("#filterBtn").classList.toggle("on",o);$("#filterBtn").setAttribute("aria-expanded",o)};
+$("#recentBtn").onclick=()=>setSort(S.sort==="recent"?"placement":"recent");
+
+/* ---------- detail ---------- */
+function kv(label,val,{info,copy,muted}={}){return `<div><dt>${label}${info?`<span class="info" title="${info}">${ic("info")}</span>`:""}</dt><dd class="${muted?"muted":""}">${val}${copy?`<button class="mini" data-copy="${copy}" aria-label="Copy ${label}" title="Copy ${label}">${ic("copy")}</button>`:""}</dd></div>`}
+let bdTok=0,bdCur=null;
+function setBackdrop(l){
+  const key=l.ingame_id+"|"+l.verification_url;if(key===bdCur)return;bdCur=key;
+  const tok=++bdTok,A=$("#auraA"),B=$("#auraB");
+  const front=A.classList.contains("on")?A:B,back=front===A?B:A;
+  const chain=[ART+l.ingame_id+".webp",thumb(l)].filter(Boolean);
+  const pre=new Image();let n=0;
+  const fail=()=>{if(tok!==bdTok)return;n++;if(n<chain.length)pre.src=chain[n];else{front.classList.remove("on");back.classList.remove("on")}};
+  pre.onload=()=>{if(tok!==bdTok)return;if(pre.naturalWidth<=120){fail();return}back.src=pre.src;back.dataset.src=pre.src;requestAnimationFrame(()=>{back.classList.add("on");front.classList.remove("on")})};
+  pre.onerror=fail;
+  if(chain.length)pre.src=chain[0];else{front.classList.remove("on")}
+}
+function renderDetail(){
+  const l=S.levels[S.sel],d=$("#detail");
+  if(!l){d.innerHTML=`<div class="sk" style="height:90px;margin-bottom:20px"></div><div class="sk" style="aspect-ratio:16/9"></div>`;return}
+  const A=S.aredl[l.ingame_id]||null,tags=(A&&A[3]&&A[3].length)?A[3]:TAGS,gddl=A&&A[2]!=null?String(Math.round(A[2])):"—";
+  const t=thumb(l),fav=S.favs.has(l.id),sec=SECTIONS.find(([a,b])=>l.placement>=a&&l.placement<=b)[2];
+  $("#mobPos").textContent=`#${l.placement} / ${S.levels.length}`;
+  setBackdrop(l);
+  const dis=c=>c?" disabled":"";
+  d.innerHTML=`<div class="enter">
+  <section class="hero">
+    <div>
+      <div class="crumb"><span class="badge tnum">#${l.placement}</span>Classic · ${sec}</div>
+      <h1 class="title">${esc(l.name)}</h1>
+      <p class="by">Published by <b>${esc(l.holder)}</b> · Verified by <b class="vf">${esc(l.verifier.username)}</b></p>
+      <p class="facts tnum">${realDate(l.date_created)?`<span>Added <b>${dShort(l.date_created)}</b></span>`:""}${A?`<span>AREDL <b>#${A[0]}</b></span>`:""}</p>
+    </div>
+    <div class="actions">
+      <button class="icon-btn ${fav?"on":""}" data-act="fav" aria-pressed="${fav}" aria-label="Favorite" title="Favorite">${ic("heart")}</button>
+    </div>
+  </section>
+  <dl class="kv scores">
+    ${kv("Total score (100%)",fmt2(l.points))}
+    ${minScore(l)!=null?kv(`List percent score (${l.list_percent}%)`,fmtScore(minScore(l)),{info:"Points for a record at the minimum percent"}):""}
+  </dl>
+  <div class="tags">${tags.map(x=>`<span class="tag">${esc(x)}</span>`).join("")}</div>
+  <a class="video" href="${watchUrl(l)}" target="_blank" rel="noopener noreferrer" aria-label="Watch ${esc(l.name)} verification on YouTube">
+    ${t?`<img id="vimg" alt="${esc(l.name)}" src="${t.replace("hqdefault","maxresdefault")}">`:""}
+    <div class="shade"></div>
+    <div class="center"><span class="play">${ic("play")}</span></div>
+    <div class="vbar"><span class="vwho"><b>${esc(l.name)} — Verification</b> · ${esc(l.verifier.username)}</span><span class="vtag">Level Preview</span></div>
+  </a>
+  <section class="block"><h3 class="h3">Level details</h3>
+    <dl class="kv stats">
+      ${kv("Level ID",l.ingame_id,{copy:l.ingame_id})}
+      ${kv("List Points",fmt2(l.points))}
+      ${kv("Min. Progress",l.list_percent+"%",{info:"Minimum % required for record"})}
+      ${kv("Length",l.length+"s")}
+      ${kv("GDDL Tier",gddl,{info:"GD Demon Ladder",muted:gddl==="—"})}
+    </dl>
+  </section>
+  <section class="block hist-block"><h3 class="h3"><span>Position History</span><button type="button" class="hist-tog" id="histTog" aria-expanded="${S.histOpen}" aria-controls="hist">${S.histOpen?"Hide":"Show"}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></h3>
+    <ul class="hist" id="hist">
+      <li class="now"><div>Currently placed at <b>#${l.placement}</b></div><span>Current Position</span></li>
+    </ul>
+    <div id="histMore"></div>
+  </section>
+  <div class="rec-inline" id="recInline"></div>
+  </div>`;
+  const vi=$("#vimg");
+  if(vi){vi.onload=()=>{if(vi.naturalWidth<=120&&!vi.dataset.fb){vi.dataset.fb=1;vi.src=t}else vi.classList.add("ld")};vi.onerror=()=>{if(!vi.dataset.fb){vi.dataset.fb=1;vi.src=t}else vi.remove()}}
+}
+$("#detail").addEventListener("click",e=>{
+  if(e.target.closest("#histTog")){const l=S.levels[S.sel];S.histOpen=!S.histOpen;loadHistory(l);return}
+  const b=e.target.closest("[data-act]");if(!b)return;const l=S.levels[S.sel];
+  const a=b.dataset.act;
+  if(a==="fav"){S.favs.has(l.id)?S.favs.delete(l.id):S.favs.add(l.id);try{localStorage.setItem("dh-favs",JSON.stringify([...S.favs]))}catch(_){}const on=S.favs.has(l.id);b.classList.toggle("on",on);b.setAttribute("aria-pressed",on);toast(on?`Added ${l.name} to favorites`:`Removed from favorites`);renderList();markSel()}
+});
+function copy(txt,msg){(navigator.clipboard?navigator.clipboard.writeText(String(txt)):Promise.reject()).then(()=>toast(msg)).catch(()=>{const t=document.createElement("textarea");t.value=txt;document.body.appendChild(t);t.select();try{document.execCommand("copy");toast(msg)}catch(_){toast(String(txt))}t.remove()})}
+document.addEventListener("click",e=>{const c=e.target.closest("[data-copy]");if(c)copy(c.dataset.copy,`Copied ID ${c.dataset.copy}`)});
+
+/* ---------- records ---------- */
+let recReq=0;
+async function loadRecords(l,force){
+  const id=++recReq;
+  if(!force&&S.records.has(l.id)){renderRecords(l,S.records.get(l.id));return}
+  renderRecords(l,"loading");
+  try{const r=await fetch(`${API}/level/classic/record/list?level_id=${l.id}&limit=25`);if(!r.ok)throw new Error(`HTTP ${r.status}`);const j=await r.json();if(j.message!=="success")throw new Error(j.message);
+    S.records.set(l.id,j.data);if(id===recReq)renderRecords(l,j.data)}
+  catch(err){if(id===recReq)renderRecords(l,{error:err.message||"Failed to load records"})}
+}
+function recordsHTML(l,R){
+  const head=`<div class="rec-head"><h3 class="h3">${ic("trophy")}Records${R&&R.records?`<span class="count tnum"><span class="n">${R.total_count}</span> total · ${R.completed_count} complete</span>`:""}</h3><p><b>${l.list_percent}%</b> or above qualifies</p></div>`;
+  let body;
+  if(R==="loading")body=`<div style="padding:16px;display:flex;flex-direction:column;gap:8px">${'<div class="sk" style="height:40px"></div>'.repeat(4)}</div>`;
+  else if(R.error)body=`<div class="err">${ic("alert")}<p>${esc(R.error)}</p><button class="btn btn-ghost" data-retry>${ic("refresh")}Retry</button></div>`;
+  else if(!R.records.length)body=`<p class="rec-none">No records yet. Be the first to beat this level!</p>`;
+  else body=`<div class="enter">`+R.records.map((r,i)=>`<a class="rrow" href="${esc(r.video_url)}" target="_blank" rel="noopener noreferrer"><span class="medal tnum ${i<3?"m"+(i+1):""}">${i+1}</span><span class="rwho"><b>${esc(r.user.username)}${flagImg(r.user.country)}</b><small>${esc(String(r.user.country||"").replace(/-/g," "))}</small></span><span class="rpct tnum ${r.percent===100?"full":""}">${r.percent}%</span></a>`).join("")+`</div>`;
+  const qs=R&&R.records?`<div class="qs"><h4 class="h3">Quick Stats</h4><dl>${[["Total",R.total_count],["Completions",R.completed_count],["In Progress",R.total_count-R.completed_count],["Min %",l.list_percent+"%"]].map(([a,b])=>`<div><dt>${a}</dt><dd>${b}</dd></div>`).join("")}</dl></div>`:"";
+  const links=[["GDL",`https://demonlist.org/classic/${l.id}`],["GDDL","https://gdladder.com"],["AREDL",S.aredl[l.ingame_id]?`https://aredl.net/list/${l.ingame_id}`:"https://aredl.net"]].map(([a,u])=>`<a href="${u}" target="_blank" rel="noopener noreferrer">${a} ${ic("ext")}</a>`).join("");
+  return {head,body,foot:`<div class="rec-foot"><button class="btn btn-ghost submit" data-soon="Record submission">Submit Record</button>${qs}<div class="links">${links}</div></div>`};
+}
+function renderRecords(l,R){
+  const h=recordsHTML(l,R);
+  $("#recAside").innerHTML=h.head+`<div class="scroll rec-list">${h.body}</div>`+h.foot;
+  const inl=$("#recInline");if(inl)inl.innerHTML=h.head+`<div class="rec-list">${h.body}</div>`+h.foot;
+  document.querySelectorAll("[data-retry]").forEach(b=>b.onclick=()=>loadRecords(l,true));
+}
+
+
+/* ---------- position history (api.demonlist.org/level/classic/history/list, 20 per page, newest first) ---------- */
+const H=new Map();let histReq=0;
+const nm=a=>String(a||"").replace(/^#\d+\s*-\s*/,"");const pos=a=>(String(a||"").match(/^#(\d+)/)||[])[1];
+function histText(e){
+  const a=e.args||[];
+  switch(e.type){
+    case "level_added":return `Added to the list at <b>#${e.new_placement}</b>`;
+    case "start_tracking":return `Tracking started at <b>#${a[0]}</b>`;
+    case "level_moved_up":return `Moved up from #${a[0]} to <b>#${e.new_placement}</b>`;
+    case "level_moved_down":return `Moved down from #${a[0]} to <b>#${e.new_placement}</b>`;
+    case "another_level_added":return `<b>#${e.new_placement}</b> · ${esc(nm(a[0]))} added${pos(a[0])?` at #${pos(a[0])}`:""}`;
+    case "another_level_removed":return `<b>#${e.new_placement}</b> · ${esc(nm(a[0]))} removed`;
+    case "another_level_moved":return `<b>#${e.new_placement}</b> · ${esc(a[0])} moved to #${a[1]}`;
+    default:return e.new_placement?`<b>#${e.new_placement}</b>`:"";
+  }
+}
+function histMark(e,older){
+  const prev=older?(older.new_placement??+older.args?.[0]):null,now=e.new_placement;
+  if(e.subtype==="fallen_to_advanced"||(prev&&now&&prev<=150&&now>150))return "Left the top 150";
+  if(e.subtype==="returned_from_advanced"||(prev&&now&&prev>150&&now<=150))return "Back in the top 150";
+  if(prev&&now&&prev<=75&&now>75)return "Left the Main List";
+  if(prev&&now&&prev>75&&now<=75)return "Entered the Main List";
+  return "";
+}
+function renderHistory(l){
+  const ul=$("#hist"),more=$("#histMore");if(!ul||S.levels[S.sel]!==l)return;
+  const st=H.get(l.id),now=`<li class="now"><div>Currently placed at <b>#${l.placement}</b></div><span>Current Position</span></li>`;
+  const tg=$("#histTog");if(tg){tg.setAttribute("aria-expanded",S.histOpen);tg.firstChild.nodeValue=S.histOpen?"Hide":"Show"}
+  if(!S.histOpen){ul.innerHTML=now;more.innerHTML="";return}
+  if(!st||st.loading&&!st.items.length){ul.innerHTML=now+`<li class="hl"><div class="sk" style="height:14px;width:60%"></div></li>`.repeat(3);more.innerHTML="";return}
+  if(st.error&&!st.items.length){ul.innerHTML=now;more.innerHTML=`<p class="hist-none">Position history unavailable</p>`;return}
+  if(!st.items.length){ul.innerHTML=now;more.innerHTML=`<p class="hist-none">No position changes recorded yet</p>`;return}
+  ul.innerHTML=now+st.items.map((e,i)=>{const d=realDate(e.date_created),m=histMark(e,st.items[i+1]);
+    return `<li${m?' class="mark"':""}><div>${histText(e)}${m?`<em class="flag">${m}</em>`:""}</div>${d?`<span class="tnum">${dShort(d)}</span>`:""}</li>`}).join("");
+  more.innerHTML=st.done?"":`<button class="btn btn-ghost hist-btn" id="histBtn"${st.loading?" disabled":""}>${st.loading?"Loading…":"Show older changes"}</button>`;
+  const b=$("#histBtn");if(b)b.onclick=()=>loadHistory(l,true);
+}
+async function loadHistory(l,next){
+  let st=H.get(l.id);
+  if(!S.histOpen&&!next){renderHistory(l);return}
+  if(st&&!next){renderHistory(l);if(st.items.length||st.loading)return}
+  if(!st){st={items:[],done:false,loading:false,error:false};H.set(l.id,st)}
+  if(st.loading||st.done)return;
+  st.loading=true;st.error=false;renderHistory(l);const id=++histReq;
+  try{const r=await fetch(`${API}/level/classic/history/list?level_id=${l.id}&limit=20&offset=${st.items.length}`);if(!r.ok)throw new Error(`HTTP ${r.status}`);const j=await r.json();
+    if(j.message!=="success"||!Array.isArray(j.data?.history))throw new Error(j.message);
+    st.items.push(...j.data.history);if(j.data.history.length<20)st.done=true}
+  catch(_){st.error=true;if(!st.items.length)st.done=true}
+  st.loading=false;renderHistory(l);
+}
+/* ---------- selection / routing ---------- */
+const mq=matchMedia("(max-width:860px)");
+function select(i,fromList,keepOpen){
+  if(i<0||i>=S.levels.length)return;
+  S.histOpen=false;S.sel=i;const r=markSel();
+  if(r&&!fromList)r.scrollIntoView({block:"nearest",behavior:"smooth"});
+  renderDetail();$("#main").scrollTo({top:0,behavior:fromList||keepOpen?"auto":"smooth"});
+  loadRecords(S.levels[i]);loadHistory(S.levels[i]);
+  history.replaceState(null,"",`#/classic/${S.levels[i].placement}`);
+  if(mq.matches&&(fromList||keepOpen))document.body.classList.add("detail-open");
+}
+$("#backBtn").onclick=()=>{document.body.classList.remove("detail-open");markSel()?.scrollIntoView({block:"center"})};
+function fromHash(){const m=location.hash.match(/#\/classic\/(\d+)/);if(!m)return 0;const i=S.levels.findIndex(l=>l.placement===+m[1]);return i<0?0:i}
+document.addEventListener("keydown",e=>{
+  const typing=/INPUT|TEXTAREA/.test(document.activeElement.tagName);
+  if(view==="auth")return;
+  if(view==="lb"){if(e.key==="/"&&!typing){e.preventDefault();$("#lbQ").focus()}else if(e.key==="Escape"&&typing)document.activeElement.blur();return}
+  if(view==="home"){if(e.key==="/"&&!typing){e.preventDefault();showList(S.sel,false,true);$("#q").focus()}return}
+  if(e.key==="/"&&!typing){e.preventDefault();$("#q").focus()}
+  else if(e.key==="Escape"){if(typing)document.activeElement.blur();document.body.classList.remove("detail-open");closeSheet()}
+  else if(!typing&&(e.key==="ArrowDown"||e.key==="j")){e.preventDefault();step(1)}
+  else if(!typing&&(e.key==="ArrowUp"||e.key==="k")){e.preventDefault();step(-1)}
+});
+function step(d){const v=visible();if(!v.length)return;const cur=v.indexOf(S.levels[S.sel]);const n=v[Math.max(0,Math.min(v.length-1,cur+d))];select(S.levels.indexOf(n))}
+
+/* ---------- home (round 6): api.demonlist.org/changelog/list, 20 per page, newest first ---------- */
+let view="list";
+const CL={items:[],loading:false,done:false,error:false};
+function renderFigs(){
+  $("#homeFoot").textContent=`Live data from demonlist.org and AREDL. Built-in copy of the list from ${dLong(SNAPSHOT_DATE+"T12:00:00Z")} is used when the API is unavailable.`;
+}
+const ctxOf=e=>{const p=[];if(e.above_level)p.push(`above ${esc(e.above_level.level_name)}`);if(e.below_level)p.push(`below ${esc(e.below_level.level_name)}`);let t=p.join(", ");if(e.placement&&e.new_placement&&e.placement!==e.new_placement)t+=(t?" · ":"")+`now #${e.placement}`;return t?t[0].toUpperCase()+t.slice(1):""};
+function chgOf(e){
+  const a=e.args||[],o=a[0];
+  switch(e.type){
+    case "level_added":return `<span class="chg add">Placed at <b>#${e.new_placement}</b></span>`;
+    case "level_moved_up":return `<span class="chg up">#${esc(o)} → <b>#${e.new_placement}</b></span>`;
+    case "level_moved_down":return `<span class="chg">#${esc(o)} → <b>#${e.new_placement}</b></span>`;
+    case "level_removed":return `<span class="chg">Removed${o?` from #${esc(o)}`:""}</span>`;
+    default:return e.new_placement?`<span class="chg"><b>#${e.new_placement}</b></span>`:"";
+  }
+}
+const dayLabel=k=>{const t=new Date(),y=new Date(Date.now()-864e5);return k===dLong(t)?"Today":k===dLong(y)?"Yesterday":k};
+const ctxShort=e=>{const p=[];if(e.above_level)p.push(`above <span class="nl">${esc(e.above_level.level_name)}</span>`);if(e.below_level)p.push(`below <span class="nl">${esc(e.below_level.level_name)}</span>`);return p.join(", ")};
+function crowOf(e){
+  const a=e.args||[],o=a[0];let k="add",ico="",what;
+  switch(e.type){
+    case "level_added":what=`placed at <span class="nb">#${e.new_placement}</span>`;break;
+    case "level_moved_up":k="";ico=ic("up");what=`<span class="nb">#${esc(o)} → #${e.new_placement}</span>`;break;
+    case "level_moved_down":k="dn";ico=ic("down");what=`<span class="nb">#${esc(o)} → #${e.new_placement}</span>`;break;
+    case "level_removed":k="dn";ico=ic("x");what=`removed${o?` from <span class="nb">#${esc(o)}</span>`:""}`;break;
+    default:what=e.new_placement?`<span class="nb">#${e.new_placement}</span>`:"";
+  }
+  const c=ctxShort(e);
+  return `<div class="crow"><span class="cdot ${k}">${ico}</span><div class="ctext">${lk(e.level_id,e.level_name)}${what}${c?`, ${c}`:""}</div></div>`;
+}
+function groupDays(items,row){
+  const g=[];for(const e of items){const d=realDate(e.date_created);if(!d)continue;const k=dLong(d);let last=g[g.length-1];if(!last||last.k!==k)g.push(last={k,rows:[]});last.rows.push(row(e))}
+  return g.map(x=>`<h3 class="cl-day tnum">${dayLabel(x.k)}</h3>${x.rows.join("")}`).join("");
+}
+const lk=(id,name)=>S.levels.some(l=>l.id===id)?`<button class="lk" data-open="${id}">${esc(name)}</button>`:`<span class="lk">${esc(name)}</span>`;
+function renderChanges(){
+  const body=$("#clBody"),more=$("#clMore");if(!body)return;
+  if(!CL.items.length&&(CL.loading||!CL.done&&!CL.error)){$("#clTitle").textContent="Recent changes";body.innerHTML=`<div style="padding:8px 16px">${'<div class="sk" style="height:16px;margin:12px 0"></div>'.repeat(6)}</div>`;more.innerHTML="";return}
+  if(!CL.items.length){
+    /* fallback: recently added levels from the list itself (placeholder 2020-01-01 dates are skipped) */
+    $("#clTitle").textContent="Recently added";
+    const rec=S.levels.filter(l=>realDate(l.date_created)).sort((a,b)=>new Date(b.date_created)-new Date(a.date_created)).slice(0,12);
+    body.innerHTML=groupDays(rec,l=>`<div class="crow"><span class="cdot add"></span><div class="ctext">${lk(l.id,l.name)}now <span class="nb">#${l.placement}</span></div></div>`);more.innerHTML="";return;
+  }
+  $("#clTitle").textContent="Recent changes";
+  const st=body.scrollTop;
+  body.innerHTML=groupDays(CL.items,crowOf)+(CL.done?`<div class="cl-end">End of history</div>`:`<div class="cl-end">${CL.loading?"Loading…":`<button class="btn btn-ghost" id="clBtn">Show older changes</button>`}</div>`);
+  body.scrollTop=st;more.innerHTML="";
+  const b=$("#clBtn");if(b)b.onclick=loadChangelog;
+}
+async function loadChangelog(){
+  if(CL.loading||CL.done)return;CL.loading=true;renderChanges();
+  try{const r=await fetch(`${API}/changelog/list?limit=20&offset=${CL.items.length}`);if(!r.ok)throw new Error(`HTTP ${r.status}`);const j=await r.json();
+    if(j.message!=="success"||!Array.isArray(j.data?.changelog))throw new Error(j.message);
+    CL.items.push(...j.data.changelog);if(j.data.changelog.length<20)CL.done=true}
+  catch(_){CL.error=true;if(!CL.items.length)CL.done=true}
+  CL.loading=false;renderChanges();renderFigs();
+}
+function renderHome(){renderFigs();renderChanges();buildMosaic()}
+/* home background: mosaic of level art (AREDL thumbnails, YouTube fallback), built once, lazy, fewer tiles on phones */
+let mosaicDone=false;
+function buildMosaic(){
+  if(mosaicDone||!S.levels.length)return;mosaicDone=true;
+  const n=matchMedia("(max-width:860px)").matches?36:100;
+  $("#mosaic").innerHTML=S.levels.slice(0,n).map(l=>{const y=thumb(l,"mqdefault");return `<span><img loading="lazy" decoding="async" alt="" src="${ART+l.ingame_id}.webp"${y?` data-fb="${y}"`:""} onload="this.classList.add('ld')" onerror="if(this.dataset.fb){this.src=this.dataset.fb;this.removeAttribute('data-fb')}else this.remove()"></span>`}).join("");
+}
+function setNav(){document.querySelectorAll(".nav a[data-view]").forEach(a=>{const on=a.dataset.view===view;a.classList.toggle("active",on);on?a.setAttribute("aria-current","page"):a.removeAttribute("aria-current")})}
+function closeSheet(){$("#sheet").classList.remove("open");$("#menuBtn").innerHTML=ic("menu");$("#menuBtn").setAttribute("aria-expanded",false)}
+function showHome(push){
+  view="home";document.body.classList.add("view-home");document.body.classList.remove("detail-open","view-lb","lb-open","view-auth");closeSheet();setNav();renderHome();
+  if(push)history.pushState(null,"",location.pathname+location.search);
+  $("#homeView").scrollTop=0;window.scrollTo(0,0);
+  if(!CL.items.length&&!CL.done)loadChangelog();
+}
+function showList(i,open,push){
+  const was=view;view="list";document.body.classList.remove("view-home","view-lb","lb-open","view-auth");closeSheet();setNav();
+  if(push&&S.levels[i])history.pushState(null,"",`#/classic/${S.levels[i].placement}`);
+  if(was!=="list")window.scrollTo(0,0);
+  select(i,!!open);markSel()?.scrollIntoView({block:"center"});
+}
+document.addEventListener("click",e=>{
+  const v=e.target.closest("[data-view]");if(v){e.preventDefault();const t=v.dataset.view;t==="home"?showHome(view!=="home"):t==="signin"||t==="signup"?showAuth(t,true):t==="lb"?showLb(null,false,view!=="lb"||document.body.classList.contains("lb-open")):showList(S.sel,false,true);return}
+  const o=e.target.closest("[data-open]");if(o){e.preventDefault();const i=S.levels.findIndex(l=>l.id===+o.dataset.open);if(i>=0)showList(i,true,true)}
+});
+
+/* ---------- leaderboard (round 11): api.demonlist.org /leaderboard/user/list + /user/get, open, CORS * ---------- */
+const LB={items:[],q:"",done:false,loading:false,err:false,total:null,sel:null,prof:new Map(),lq:"",seq:0};
+const isLbHash=()=>/^#\/leaderboard/.test(location.hash);
+const lbHashId=()=>{const m=location.hash.match(/^#\/leaderboard\/(\d+)/);return m?+m[1]:null};
+const isMob=()=>matchMedia("(max-width:860px)").matches;
+const fmtPts=p=>Number(p).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+const ctry=c=>c&&c!=="Unknown"?String(c).replace(/-/g," "):"";
+function showLb(id,open,push){
+  view="lb";document.body.classList.remove("view-home","detail-open","view-auth");document.body.classList.add("view-lb");closeSheet();setNav();buildMosaic();
+  if(id)LB.sel=id;
+  document.body.classList.toggle("lb-open",!!open&&isMob());
+  if(push)history.pushState(null,"",LB.sel&&open?`#/leaderboard/${LB.sel}`:"#/leaderboard");
+  window.scrollTo(0,0);
+  if(!LB.items.length&&!LB.loading)loadLb(true);else renderLbRows();
+  if(LB.sel)loadProf(LB.sel);else renderProf();
+  if(LB.total===null)countPlayers();
+}
+async function loadLb(reset){
+  if(reset){LB.items=[];LB.done=false;LB.err=false}
+  const seq=++LB.seq;LB.loading=true;renderLbRows();
+  try{const q=LB.q?`&search=${encodeURIComponent(LB.q)}`:"";
+    const r=await fetch(`${API}/leaderboard/user/list?limit=50&offset=${LB.items.length}${q}`);if(!r.ok)throw new Error(`HTTP ${r.status}`);
+    const j=await r.json();if(seq!==LB.seq)return;const u=Array.isArray(j.data?.users)?j.data.users:[];
+    LB.items.push(...u);LB.done=u.length<50;LB.err=false;
+    if(!LB.sel&&u.length&&!LB.q){LB.sel=u[0].id;loadProf(LB.sel)}
+  }catch(_){if(seq!==LB.seq)return;LB.err=true}
+  LB.loading=false;renderLbRows();
+}
+/* the API has no total, so find the last offset with a binary search (limit=1, ~15 small requests, once) */
+async function countPlayers(){
+  if(LB.total!==null)return;LB.total=0;
+  const has=async o=>{const r=await fetch(`${API}/leaderboard/user/list?limit=1&offset=${o}`);if(!r.ok)throw 0;const j=await r.json();return (j.data?.users||[]).length>0};
+  try{let lo=0,hi=1024;while(await has(hi)){lo=hi;hi*=2}
+    while(hi-lo>1){const m=(lo+hi)>>1;(await has(m))?lo=m:hi=m}
+    LB.total=hi;renderLbCount()}catch(_){LB.total=0}
+}
+function renderLbCount(){
+  const n=LB.items.length;
+  $("#lbCount").innerHTML=LB.q?`<b>${n}${LB.done?"":"+"}</b> found`:LB.total?`<b>${LB.total.toLocaleString("en-US")}</b> players`:n?`<b>${n}+</b> players`:"&nbsp;";
+}
+function renderLbRows(){
+  renderLbCount();const el=$("#lbRows");
+  if(!LB.items.length){
+    el.innerHTML=LB.loading?`<div style="padding:4px 16px">${'<div class="sk" style="height:18px;margin:14px 0"></div>'.repeat(10)}</div>`
+      :LB.err?`<div class="err"><span>The leaderboard isn't available right now.</span><button class="btn btn-ghost" id="lbRetry">Try again</button></div>`
+      :`<div class="empty"><b>No players found</b><p>Try another name.</p></div>`;return}
+  el.innerHTML=LB.items.map(u=>{const c=ctry(u.country),p=u.placement;return `<button class="lrow${u.id===LB.sel?" sel":""}" data-uid="${u.id}"><span class="rank tnum${p<4?` r${p}`:""}">${p}</span><span class="meta lnm"><span class="flag">${c?flagImg(u.country):""}</span><b>${esc(u.username)}</b>${c&&!FLAGS[u.country]?`<small>${esc(c)}</small>`:""}</span><span class="lp tnum">${fmtPts(u.points)}</span></button>`}).join("")
+    +(LB.done?"":`<div class="cl-end"><button class="btn btn-ghost" id="lbMore"${LB.loading?" disabled":""}>${LB.loading?"Loading…":"Show more"}</button></div>`)
+    +(LB.err?`<div class="cl-end">Couldn't load more. <button class="more" id="lbRetry">Try again</button></div>`:"");
+}
+async function loadProf(id){
+  if(LB.prof.has(id)){renderProf();return}
+  renderProf();
+  try{const r=await fetch(`${API}/user/get?id=${id}`);if(!r.ok)throw new Error(`HTTP ${r.status}`);const j=await r.json();if(j.message!=="success")throw 0;LB.prof.set(id,j.data)}
+  catch(_){LB.prof.set(id,null)}
+  if(LB.sel===id)renderProf();
+}
+const LB_SECS=[["main","Main List"],["extended","Extended List"],["advanced","Advanced List"],["unbounded","Unbounded List"]];
+function lvlChip(x,extra){const i=S.levels.findIndex(l=>l.id===x.id);const t=`${esc(x.name)}${extra||""}`;
+  return i>=0?`<button class="tag" data-open="${x.id}" data-n="${esc(x.name.toLowerCase())}" title="#${x.placement} ${esc(x.name)}">${t}</button>`:`<span class="tag" data-n="${esc(x.name.toLowerCase())}" title="#${x.placement} ${esc(x.name)}">${t}</span>`}
+function renderProf(){
+  const el=$("#lbProf"),id=LB.sel;
+  const back=`<div class="mob-back"><button class="btn btn-ghost" id="lbBack"><svg class="i" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>All players</button><span class="pos" id="lbPos"></span></div>`;
+  if(!id||!LB.prof.has(id)){el.innerHTML=back+`<div class="lb-ph"><div class="sk" style="height:28px;width:200px"></div><div class="sk" style="height:14px;width:160px;margin-top:10px"></div><div class="sk" style="height:46px;margin-top:20px"></div></div><div style="padding:16px 20px">${'<div class="sk" style="height:24px;margin:8px 0"></div>'.repeat(6)}</div>`;return}
+  const d=LB.prof.get(id);
+  if(!d){el.innerHTML=back+`<div class="err"><span>This profile isn't available right now.</span><button class="btn btn-ghost" id="lbProfRetry">Try again</button></div>`;return}
+  const L=d.levels||{},ver=L.verified||[],vset=new Set(ver.map(x=>x.id)),prog=L.progress||[];
+  const comp=LB_SECS.reduce((a,[k])=>a+(L[k]||[]).length,0),c=ctry(d.country),h=L.hardest;
+  let chips=0;
+  const vs=[...ver].sort((a,b)=>(a.placement||1e9)-(b.placement||1e9));chips+=vs.length;
+  const secs=(vs.length?`<div class="lb-sec"><h3>Verified<em>${vs.length}</em></h3><div class="lb-chips">${vs.map(x=>lvlChip(x)).join("")}</div></div>`:"")
+    +LB_SECS.map(([k,t])=>{const cp=(L[k]||[]).filter(x=>!vset.has(x.id));if(!cp.length)return"";chips+=cp.length;
+    return `<div class="lb-sec"><h3>${t}<em>${cp.length} completed</em></h3><div class="lb-chips">${cp.map(x=>lvlChip(x)).join("")}</div></div>`}).join("")
+    +(prog.length?`<div class="lb-sec"><h3>In progress<em>${prog.length}</em></h3><div class="lb-chips">${prog.map(x=>lvlChip(x,`<i>${x.percent}%</i>`)).join("")}</div></div>`:"");
+  chips+=prog.length;
+  el.innerHTML=back+`<div class="lb-ph"><h2 class="lb-name">${esc(d.username)}</h2><p class="lb-meta"><b>#${d.placement}</b> rank · <b>${fmtPts(d.points)}</b> pts${c?` · ${esc(c)}`:""}</p>
+    <p class="lb-stats"><span><b>${comp}</b> completions</span><span><b>${ver.length}</b> verifications</span>${prog.length?`<span><b>${prog.length}</b> in progress</span>`:""}</p>
+    ${h?`<${S.levels.some(l=>l.id===h.id)?`button data-open="${h.id}"`:"div"} class="lb-hard"><small>Hardest level</small><b>#${h.placement} ${esc(h.name)}</b></${S.levels.some(l=>l.id===h.id)?"button":"div"}>`:""}
+    ${chips>20?`<div class="lb-lq"><label class="search"><span class="sr">Search levels</span><svg class="i" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg><input id="lbLq" type="search" placeholder="Search levels..." autocomplete="off"></label><span>${chips} levels</span></div>`:""}</div>
+    <div class="lb-pb scroll" id="lbPb">${secs||'<div class="empty"><b>No levels yet</b><p>This player has no completed levels on the classic list.</p></div>'}</div>`;
+  $("#lbPos").textContent=`#${d.placement}`;
+}
+function filterChips(q){q=q.trim().toLowerCase();const pb=$("#lbPb");if(!pb)return;
+  pb.querySelectorAll(".tag").forEach(t=>t.hidden=!!q&&!t.dataset.n.includes(q));
+  pb.querySelectorAll(".lb-sec").forEach(s=>s.hidden=!!q&&!s.querySelector(".tag:not([hidden])"))}
+let lbT;
+$("#lbView").addEventListener("input",e=>{
+  if(e.target.id==="lbQ"){clearTimeout(lbT);lbT=setTimeout(()=>{LB.q=e.target.value.trim();$("#lbRows").scrollTop=0;loadLb(true)},250)}
+  if(e.target.id==="lbLq")filterChips(e.target.value);
+});
+$("#lbView").addEventListener("click",e=>{
+  const r=e.target.closest("[data-uid]");
+  if(r){const id=+r.dataset.uid;LB.sel=id;document.querySelectorAll(".lrow.sel").forEach(x=>x.classList.remove("sel"));r.classList.add("sel");
+    history.pushState(null,"",`#/leaderboard/${id}`);if(isMob()){document.body.classList.add("lb-open");window.scrollTo(0,0)}loadProf(id);return}
+  if(e.target.closest("#lbMore")){loadLb(false);return}
+  if(e.target.closest("#lbRetry")){LB.items.length?loadLb(false):loadLb(true);return}
+  if(e.target.closest("#lbProfRetry")){LB.prof.delete(LB.sel);loadProf(LB.sel);return}
+  if(e.target.closest("#lbBack")){history.pushState(null,"","#/leaderboard");document.body.classList.remove("lb-open");document.querySelector(".lrow.sel")?.scrollIntoView({block:"center"});return}
+});
+
+/* ---------- sign in / sign up (round 12): UI only, nothing is sent ---------- */
+const authHash=()=>{const m=location.hash.match(/^#\/(signin|signup)\b/);return m?m[1]:null};
+function showAuth(which,push){
+  view="auth";document.body.classList.remove("view-home","view-lb","lb-open","detail-open","auth-signin","auth-signup");document.body.classList.add("view-auth","auth-"+which);
+  closeSheet();setNav();buildMosaic();
+  if(push&&authHash()!==which)history.pushState(null,"",`#/${which}`);
+  $("#authView").scrollTop=0;window.scrollTo(0,0);
+}
+$("#authView").addEventListener("submit",e=>{e.preventDefault();toast("Accounts are coming soon")});
+$("#authView").addEventListener("click",e=>{if(e.target.closest("[data-soon-acc]")){e.preventDefault();toast("Accounts are coming soon")}});
+const isListHash=()=>/#\/classic\/\d+/.test(location.hash);
+window.addEventListener("popstate",()=>{if(authHash())showAuth(authHash(),false);else if(isLbHash())showLb(lbHashId(),!!lbHashId(),false);else if(isListHash())showList(fromHash(),false,false);else showHome(false)});
+
+/* ---------- data ---------- */
+function setStatus(){}
+async function loadLive(){
+  S.loading=true;setStatus();
+  try{const all=[];let off=0;for(let k=0;k<100;k++){const r=await fetch(`${API}/level/classic/list?limit=100&offset=${off}`);if(!r.ok)throw new Error(`HTTP ${r.status}`);const j=await r.json();if(j.message!=="success")throw new Error(j.message);all.push(...j.data.levels);if(j.data.levels.length<100)break;off+=100}
+    const curId=S.levels[S.sel]?.id;S.levels=all.sort((a,b)=>a.placement-b.placement);S.live=true;
+    const ni=S.levels.findIndex(l=>l.id===curId);S.sel=ni<0?0:ni;renderList();renderHome();if(view==="list"){markSel()?.scrollIntoView({block:"nearest"});renderDetail();loadRecords(S.levels[S.sel]);loadHistory(S.levels[S.sel])}
+  }catch(e){S.live=false}
+  S.loading=false;setStatus();
+}
+const sh=document.querySelector(".side-head");new ResizeObserver(()=>document.documentElement.style.setProperty("--sh",sh.offsetHeight+"px")).observe(sh);
+async function loadAredl(){
+  try{const r=await fetch(AREDL_API);if(!r.ok)return;const d=await r.json();if(!Array.isArray(d))return;
+    const m={};d.slice().sort((a,b)=>a.two_player-b.two_player).forEach(x=>{if(!m[x.level_id])m[x.level_id]=[x.position,null,x.gddl_tier,x.tags]});
+    S.aredl=m;const l=S.levels[S.sel];if(l&&view==="list"){const y=$("#main").scrollTop;renderDetail();$("#main").scrollTop=y;loadRecords(l);loadHistory(l)}
+  }catch(_){}
+}
+/* boot */
+S.sel=fromHash();setStatus();renderList();
+if(authHash())showAuth(authHash(),false);
+else if(isLbHash())showLb(lbHashId(),!!lbHashId(),false);
+else if(isListHash()){setNav();if(S.levels.length){select(S.sel);markSel()?.scrollIntoView({block:"center"})}else renderDetail()}
+else showHome(false);
+loadLive();loadAredl();
+})();
+</script>
+</body>
+</html>
