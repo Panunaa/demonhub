@@ -296,6 +296,27 @@ button.lk:hover{color:var(--accent-2)}
   .home-cols{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:24px}
   .mosaic-in{width:220vmax;grid-template-columns:repeat(6,minmax(0,1fr))}
 }
+/* profile */
+.prof{display:none;position:relative;z-index:1;min-height:calc(100vh - var(--head));min-height:calc(100dvh - var(--head))}
+body.view-prof .prof{display:block}
+body.view-prof .app,body.view-prof .home,body.view-prof .lb,body.view-prof .auth{display:none}
+body.view-prof .aura img{opacity:0}
+body.view-prof .mosaic{display:block}
+.prof-in{max-width:900px;margin:0 auto;padding:48px 40px 64px}
+.prof-hero{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.prof-hero h1{font-size:32px;font-weight:700;letter-spacing:-.02em;color:#fff;overflow-wrap:anywhere}
+.prof-hero .badge{display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:var(--r);color:#fff;background:var(--accent);font-size:12px;font-weight:600}
+.prof-hero .spacer{flex:1}
+.prof-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:20px 0 28px}
+.prof-stats .tile{border:1px solid var(--line);border-radius:var(--r-lg);background:var(--panel-a);padding:16px}
+.prof-stats .tile b{display:block;font-size:22px;font-weight:700;color:#fff;font-variant-numeric:tabular-nums}
+.prof-stats .tile span{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-4)}
+.prof-fav .scroll{border-top:1px solid var(--line)}
+.prof .rrow{width:100%;text-align:left;cursor:pointer}
+.prof-guest{text-align:center;padding:72px 24px}
+.prof-guest p{color:var(--text-3);margin:8px 0 16px}
+@media (max-width:860px){.prof-in{padding:16px 16px 48px}}
+
 /* toast */
 .toast{position:fixed;left:50%;bottom:24px;z-index:100;transform:translate(-50%,8px);opacity:0;pointer-events:none;display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:var(--r);background:var(--raised-2);border:1px solid #33333B;color:#fff;font-size:13px;font-weight:500;transition:opacity .2s,transform .2s}
 .toast.show{opacity:1;transform:translate(-50%,0)}
@@ -562,6 +583,7 @@ body.auth-signin #signinCard,body.auth-signup #signupCard{display:block}
 
   <aside class="col rec" aria-label="Records" id="recAside"></aside>
 </div>
+<main class="prof scroll" id="profView" aria-label="Profile"></main>
 <div class="toast" id="toast" role="status"><svg class="i" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span id="toastTxt"></span></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -969,7 +991,7 @@ function showHome(push){
   if(!CL.items.length&&!CL.done)loadChangelog();
 }
 function showList(i,open,push){
-  const was=view;view="list";document.body.classList.remove("view-home","view-lb","lb-open","view-auth");closeSheet();setNav();
+  const was=view;view="list";document.body.classList.remove("view-home","view-lb","lb-open","view-auth","view-prof");closeSheet();setNav();
   if(push&&S.levels[i])history.pushState(null,"",`#/classic/${S.levels[i].placement}`);
   if(was!=="list")window.scrollTo(0,0);
   select(i,!!open);markSel()?.scrollIntoView({block:"center"});
@@ -987,7 +1009,7 @@ const isMob=()=>matchMedia("(max-width:860px)").matches;
 const fmtPts=p=>Number(p).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
 const ctry=c=>c&&c!=="Unknown"?String(c).replace(/-/g," "):"";
 function showLb(id,open,push){
-  view="lb";document.body.classList.remove("view-home","detail-open","view-auth");document.body.classList.add("view-lb");closeSheet();setNav();buildMosaic();
+  view="lb";document.body.classList.remove("view-home","detail-open","view-auth","view-prof");document.body.classList.add("view-lb");closeSheet();setNav();buildMosaic();
   if(id)LB.sel=id;
   document.body.classList.toggle("lb-open",!!open&&isMob());
   if(push)history.pushState(null,"",LB.sel&&open?`#/leaderboard/${LB.sel}`:"#/leaderboard");
@@ -1082,7 +1104,7 @@ $("#lbView").addEventListener("click",e=>{
 /* ---------- sign in / sign up (round 12): UI only, nothing is sent ---------- */
 const authHash=()=>{const m=location.hash.match(/^#\/(signin|signup)\b/);return m?m[1]:null};
 function showAuth(which,push){
-  view="auth";document.body.classList.remove("view-home","view-lb","lb-open","detail-open","auth-signin","auth-signup");document.body.classList.add("view-auth","auth-"+which);
+  view="auth";document.body.classList.remove("view-home","view-lb","lb-open","detail-open","auth-signin","auth-signup","view-prof");document.body.classList.add("view-auth","auth-"+which);
   closeSheet();setNav();buildMosaic();
   if(push&&authHash()!==which)history.pushState(null,"",`#/${which}`);
   $("#authView").scrollTop=0;window.scrollTo(0,0);
@@ -1112,7 +1134,8 @@ $("#authView").addEventListener("submit",async e=>{
 });
 $("#authView").addEventListener("click",e=>{if(e.target.closest("[data-soon-acc]")){e.preventDefault();toast("Accounts are coming soon")}});
 const isListHash=()=>/#\/classic\/\d+/.test(location.hash);
-window.addEventListener("popstate",()=>{if(authHash())showAuth(authHash(),false);else if(isLbHash())showLb(lbHashId(),!!lbHashId(),false);else if(isListHash())showList(fromHash(),false,false);else showHome(false)});
+window.addEventListener("popstate",()=>{if(authHash())showAuth(authHash(),false);else if(isLbHash())showLb(lbHashId(),!!lbHashId(),false);else if(isListHash())showList(fromHash(),false,false);else if(location.hash==="#/profile")showProf(false);else showHome(false)});
+if(location.hash==="#/profile")showProf(false);
 
 /* ---------- data ---------- */
 function setStatus(){}
@@ -1139,7 +1162,7 @@ else if(isListHash()){setNav();if(S.levels.length){select(S.sel);markSel()?.scro
 else showHome(false);
 document.addEventListener("click",function(e){
   const b=e.target.closest(".login-top");
-  if(b&&window.DH_AUTH&&DH_AUTH.user()){e.stopPropagation();DH_AUTH.signOut();toast("Signed out");}
+  if(b&&window.DH_AUTH&&DH_AUTH.user()){e.stopPropagation();showProf(true);return}
 },true);
 if(window.DH_AUTH)DH_AUTH.onChange(u=>{
   const btns=document.querySelectorAll(".login-top");
@@ -1158,6 +1181,48 @@ if(window.DH_AUTH)DH_AUTH.onChange(u=>{
     btns.forEach(b=>b.textContent="Login");
   }
 });
+function showProf(push){
+  view="prof";
+  document.body.classList.remove("view-home","view-lb","lb-open","detail-open","view-auth","auth-signin","auth-signup");
+  document.body.classList.add("view-prof");
+  closeSheet();setNav();buildMosaic();
+  if(push&&location.hash!=="#/profile")history.pushState(null,"","#/profile");
+  window.scrollTo(0,0);
+  renderProfPage();
+}
+function renderProfPage(){
+  const v=$("#profView");
+  const u=window.DH_AUTH?DH_AUTH.user():null;
+  if(!u){
+    v.innerHTML=`<div class="prof-in"><div class="hpanel prof-guest"><h1 class="title" style="font-size:28px">Profile</h1><p>Sign in to see your favorites and stats.</p><button class="btn btn-fire" data-view="signin">Login</button></div></div>`;
+    return;
+  }
+  const name=(u.user_metadata&&u.user_metadata.username)||u.email||"player";
+  const joined=u.created_at?new Date(u.created_at).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}):"-";
+  const favs=[...S.favs];
+  const rows=favs.map(id=>S.levels.find(l=>l.id===id)).filter(Boolean).sort((a,b)=>a.placement-b.placement);
+  v.innerHTML=`<div class="prof-in">
+    <div class="prof-hero"><h1>${esc(name)}</h1><span class="badge">MEMBER</span><span class="spacer"></span><button class="btn btn-ghost" id="profLogout">Log out</button></div>
+    <div class="prof-stats">
+      <div class="tile"><b>${favs.length}</b><span>Favorites</span></div>
+      <div class="tile"><b>0</b><span>Completions</span></div>
+      <div class="tile"><b style="font-size:16px">${joined}</b><span>Joined</span></div>
+    </div>
+    <section class="hpanel prof-fav">
+      <div class="rec-head"><h2 class="h3"><span>Favorites</span><span class="count">${favs.length?`<span class="n">${favs.length}</span> levels`:""}</span></h2><p>Levels you ♥ — synced to your account</p></div>
+      <div class="scroll" style="max-height:60vh">
+        ${rows.length?rows.map(l=>`<button class="rrow" data-fav="${l.id}"><span class="medal">${l.placement}</span><span class="rwho"><b>${esc(l.name)}</b><small>by ${esc(l.holder||"-")}</small></span><span class="rpct">${l.points} pts</span></button>`).join(""):`<p class="rec-none">No favorites yet — open any level and tap ♥.</p>`}
+      </div>
+    </section>
+  </div>`;
+}
+$("#profView").addEventListener("click",e=>{
+  if(e.target.closest("#profLogout")){DH_AUTH.signOut();toast("Signed out");return}
+  const b=e.target.closest("[data-fav]");
+  if(b){const id=+b.dataset.fav;const idx=S.levels.findIndex(l=>l.id===id);
+    if(idx>=0){document.body.classList.remove("view-prof");history.pushState(null,"","#/classic/"+S.levels[idx].placement);select(idx,false)}}
+});
+if(window.DH_AUTH)DH_AUTH.onChange(u=>{if(view==="prof")renderProfPage()});
 loadLive();loadAredl();
 })();
 </script>
